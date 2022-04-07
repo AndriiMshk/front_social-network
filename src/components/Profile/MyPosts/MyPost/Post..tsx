@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactFragment} from 'react';
 import s from './Post.module.css';
 
 type PostPropsType = {
@@ -6,7 +6,7 @@ type PostPropsType = {
     likeCounts: number
 }
 
-const Post = (props: PostPropsType) => {
+const Post: React.FC<PostPropsType> = (props) => {
     return (
         <div className={s.item}>
             <img
