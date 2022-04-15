@@ -1,16 +1,16 @@
 import React from 'react';
 import s from './Profile.module.css'
-import MyPosts from './MyPosts/MyPosts'
+import {MyPosts} from './MyPosts/MyPosts'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
+import {PostPropsType} from "../../index";
 
-
-const Profile = () => {
+export const Profile: React.FC<any> = (props) => {
     return (
         <div>
             <ProfileInfo/>
-            <MyPosts/>
+            <MyPosts
+                postsData={props.postsData}
+            />
         </div>
     )
 }
-
-export default Profile;
