@@ -8,7 +8,13 @@ import {Dialogs} from "./components/Dialogs/Dialogs";
 import {News} from "./components/News/News";
 import {Music} from "./components/Music/Music";
 import {Settings} from "./components/Settings/Settings";
-import {appPropsType} from "./index";
+import {DialogItemPropsType, MessageItemPropsType, PostPropsType} from "./index";
+
+type appPropsType = {
+    postsData: PostPropsType[]
+    dialogsData: DialogItemPropsType[]
+    messagesData: MessageItemPropsType[]
+}
 
 const App: React.FC<appPropsType> = (props) => {
     return (

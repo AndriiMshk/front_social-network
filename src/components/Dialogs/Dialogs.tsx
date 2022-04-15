@@ -1,14 +1,19 @@
 import React from 'react';
-import s from './Dialogs.module.css';
+import style from './Dialogs.module.css';
 import {MessageItem} from "./Massage/Message";
 import {DialogItem} from "./DialogItem/Dialog";
 import {DialogItemPropsType} from "../../index";
 import {MessageItemPropsType} from "../../index";
 
-export const Dialogs: React.FC<any> = (props) => {
+type DialogsPropsType = {
+    dialogsData: DialogItemPropsType[]
+    messagesData: MessageItemPropsType[]
+}
+
+export const Dialogs: React.FC<DialogsPropsType> = (props) => {
     return (
-        <div className={s.dialogs}>
-            <div className={s.dialogsItems}>
+        <div className={style.dialogs}>
+            <div className={style.dialogsItems}>
                 Names
                 {props.dialogsData.map((d: DialogItemPropsType, key: number) => (
                     <DialogItem
@@ -18,7 +23,7 @@ export const Dialogs: React.FC<any> = (props) => {
                     />)
                 )}
             </div>
-            <div className={s.messages}>
+            <div className={style.messages}>
                 Massages
                 {props.messagesData.map((m: MessageItemPropsType, key: number) => (
                     <MessageItem

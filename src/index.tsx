@@ -39,12 +39,6 @@ const messagesData = [
     {id: 4, message: "message4"}
 ]
 
-export type appPropsType = {
-    postsData ?: PostPropsType[]
-    dialogsData ?: DialogItemPropsType[]
-    messagesData ?: MessageItemPropsType[]
-}
-
 ReactDOM.render(
     <App
         postsData={postsData}
