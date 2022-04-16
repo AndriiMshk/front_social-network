@@ -1,0 +1,23 @@
+.friends {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.friends_name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.friends_img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.friends_img img {
+    width: 20px;
+}
