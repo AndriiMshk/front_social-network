@@ -8,12 +8,10 @@ import {Dialogs} from "./components/Dialogs/Dialogs";
 import {News} from "./components/News/News";
 import {Music} from "./components/Music/Music";
 import {Settings} from "./components/Settings/Settings";
-import {DialogItemPropsType, MessageItemPropsType, PostPropsType} from "./index";
+import {stateType} from './Redux/store'
 
 type appPropsType = {
-    postsData: PostPropsType[]
-    dialogsData: DialogItemPropsType[]
-    messagesData: MessageItemPropsType[]
+    state: stateType
 }
 
 const App: React.FC<appPropsType> = (props) => {
@@ -21,17 +19,18 @@ const App: React.FC<appPropsType> = (props) => {
         <BrowserRouter>
             <div className='app-wrapper'>
                 <Header/>
-                <Navbar/>
+                <Navbar
+                    navbarState={props.state.sidebar}
+                />
                 <div className='app-wrapper-content'>
                     <Route path={'/profile'} render={() =>
                         <Profile
-                            postsData={props.postsData}
+                            postsState={props.state.profile.postsData}
                         />
                     }/>
                     <Route path={'/dialogs'} render={() =>
                         <Dialogs
-                            dialogsData={props.dialogsData}
-                            messagesData={props.messagesData}
+                            dialogsState={props.state.dialogs}
                         />
                     }/>
                     <Route path={'/news'} component={News}/>

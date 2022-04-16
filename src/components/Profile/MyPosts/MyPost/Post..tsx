@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import s from './Post.module.css';
 
 type PostPropsType = {
@@ -8,6 +8,17 @@ type PostPropsType = {
 }
 
 export const Post: React.FC<PostPropsType> = (props) => {
+
+    let [like, setLike] = useState(props.likeCounts)
+
+    const addLike = () => {
+        setLike(like+1)
+    }
+
+    const resetLikes = () => {
+        setLike(0)
+    }
+
     return (
         <div className={s.item}>
             <img
@@ -15,7 +26,9 @@ export const Post: React.FC<PostPropsType> = (props) => {
                 alt=""/>
             {props.message}
             <div>
-                <button>Like</button>
+                <button onClick={addLike}>Like</button>
+                <button onClick={resetLikes}>reset</button>
+                <span>{like}</span>
                 <span>{props.likeCounts}</span>
             </div>
         </div>

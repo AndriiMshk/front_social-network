@@ -1,17 +1,15 @@
 import React from 'react';
-import s from './MyPosts.module.css';
+import style from './MyPosts.module.css';
 import {Post} from "./MyPost/Post.";
-import {PostPropsType} from "../../../index";
+import {PostPropsType} from "../../../Redux/store";
 
-const postsData = [
-    {id: 1, message: 'hello', likeCounts: 14},
-    {id: 2, message: 'hello', likeCounts: 24},
-    {id: 3, message: 'hello', likeCounts: 34}
-]
+type MyPostsPropsType = {
+    postsData: PostPropsType[]
+}
 
-export const MyPosts: React.FC<any> = (props) => {
+export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
     return (
-        <div className={s.postsBlock}>
+        <div className={style.postsBlock}>
             <h3>My posts</h3>
             <div>
                 <div>
@@ -21,7 +19,7 @@ export const MyPosts: React.FC<any> = (props) => {
                     <button>add post</button>
                 </div>
             </div>
-            <div className={s.posts}>
+            <div className={style.posts}>
                 {props.postsData.map( (p: any, key: number) => (
                     <Post
                         key={key}
