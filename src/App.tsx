@@ -12,6 +12,7 @@ import {stateType} from './Redux/store'
 
 type appPropsType = {
     state: stateType
+    addPost: (postMessage: string) => void
 }
 
 const App: React.FC<appPropsType> = (props) => {
@@ -26,6 +27,7 @@ const App: React.FC<appPropsType> = (props) => {
                     <Route path={'/profile'} render={() =>
                         <Profile
                             postsState={props.state.profile.postsData}
+                            addPost={props.addPost}
                         />
                     }/>
                     <Route path={'/dialogs'} render={() =>

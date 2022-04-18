@@ -6,6 +6,7 @@ import {PostPropsType} from "../../Redux/store";
 
 type ProfilePropsType = {
     postsState: PostPropsType[]
+    addPost: (postMessage: string) => void
 }
 
 export const Profile: React.FC<ProfilePropsType> = (props) => {
@@ -14,6 +15,7 @@ export const Profile: React.FC<ProfilePropsType> = (props) => {
             <ProfileInfo/>
             <MyPosts
                 postsData={props.postsState}
+                addPost={props.addPost}
             />
         </div>
     )

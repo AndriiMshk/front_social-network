@@ -4,6 +4,7 @@ import {MessageItem} from "./Massage/Message";
 import {DialogItem} from "./DialogItem/Dialog";
 import {DialogItemPropsType} from "../../Redux/store";
 import {MessageItemPropsType} from "../../Redux/store";
+import {AddMessage} from "./AddMassage";
 
 type DialogsPropsType = {
     dialogsState: {
@@ -34,7 +35,9 @@ export const Dialogs: React.FC<DialogsPropsType> = (props) => {
                         message={m.message}
                     />)
                 )}
+<AddMessage/>
             </div>
+
         </div>
     )
 }
