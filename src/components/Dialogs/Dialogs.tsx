@@ -1,43 +1,47 @@
 import React from 'react';
 import style from './Dialogs.module.css';
-import {MessageItem} from "./Massage/Message";
-import {DialogItem} from "./DialogItem/Dialog";
-import {DialogItemPropsType} from "../../Redux/store";
-import {MessageItemPropsType} from "../../Redux/store";
-import {AddMessage} from "./AddMassage";
+import { MessageItem } from './Massage/Message';
+import { DialogItem } from './DialogItem/Dialog';
+import { DialogItemPropsType } from '../../Redux/store';
+import { MessageItemPropsType } from '../../Redux/store';
+import { AddMessage } from './AddMassage';
 
 type DialogsPropsType = {
-    dialogsState: {
-        dialogsData: DialogItemPropsType[]
-        messagesData: MessageItemPropsType[]
-    }
+  dialogsState: {
+    dialogsData: DialogItemPropsType[]
+    messagesData: MessageItemPropsType[]
+  }
+  addMessage: () => void
+  updateNewMessageText: (newText: string | undefined) => void
 }
-
 
 export const Dialogs: React.FC<DialogsPropsType> = (props) => {
-    return (
-        <div className={style.dialogs}>
-            <div className={style.dialogsItems}>
-                Names
-                {props.dialogsState.dialogsData.map((d: DialogItemPropsType, key: number) => (
-                    <DialogItem
-                        key={key}
-                        name={d.name}
-                        id={d.id}
-                    />)
-                )}
-            </div>
-            <div className={style.messages}>
-                Massages
-                {props.dialogsState.messagesData.map((m: MessageItemPropsType, key: number) => (
-                    <MessageItem
-                        key={key}
-                        message={m.message}
-                    />)
-                )}
-<AddMessage/>
-            </div>
+  return (
+    <div className={style.dialogs}>
+      <div className={style.dialogsItems}>
+        Names
+        {props.dialogsState.dialogsData.map((d: DialogItemPropsType, key: number) => (
+          <DialogItem
+            key={key}
+            name={d.name}
+            id={d.id}
+          />),
+        )}
+      </div>
+      <div className={style.messages}>
+        Massages
+        {props.dialogsState.messagesData.map((m: MessageItemPropsType, key: number) => (
+          <MessageItem
+            key={key}
+            message={m.message}
+          />),
+        )}
+        <AddMessage
+          addMessage={props.addMessage}
+          updateNewMessageText={props.updateNewMessageText}
+        />
+      </div>
 
-        </div>
-    )
-}
+    </div>
+  );
+};
