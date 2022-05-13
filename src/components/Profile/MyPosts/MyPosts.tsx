@@ -1,13 +1,12 @@
 import React from 'react';
 import style from './MyPosts.module.css';
 import { Post } from './MyPost/Post.';
-import { PostPropsType } from '../../../Redux/store';
+import { PostPropsType } from '../../../Redux/state';
 
 type MyPostsPropsType = {
   postsData: PostPropsType[]
   newPostText: string
-  addPost: () => void
-  updateNewPostText: (newText: string | undefined) => void
+  dispatch: any
 }
 
 export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
@@ -16,11 +15,11 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
 
   const onPostChange = () => {
     let text = postElement.current?.value;
-    props.updateNewPostText(text);
+    props.dispatch({ type: 'UPDATE-NEW-POST-TEXT', newText: text });
   };
 
-  const addTaskHandler = () => {
-    props.addPost();
+  const addPostHandler = () => {
+    props.dispatch({type: 'ADD-POST'});
   };
 
   return (
@@ -36,7 +35,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
         </div>
         <div>
           <button
-            onClick={addTaskHandler}
+            onClick={addPostHandler}
           >add post
           </button>
         </div>

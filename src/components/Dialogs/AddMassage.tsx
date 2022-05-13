@@ -1,8 +1,7 @@
 import React from 'react';
 
 type AddMessagePropsType = {
-  addMessage: () => void
-  updateNewMessageText: (newText: string | undefined) => void
+  dispatch: any
 }
 
 export const AddMessage: React.FC<AddMessagePropsType> = (props) => {
@@ -10,12 +9,12 @@ export const AddMessage: React.FC<AddMessagePropsType> = (props) => {
   let newMessage = React.createRef<HTMLTextAreaElement>();
 
   const addMessageHandler = () => {
-    props.addMessage();
+    props.dispatch({ type: 'ADD-MESSAGE' });
   };
 
   const onPostChange = () => {
     let text = newMessage.current?.value;
-    props.updateNewMessageText(text);
+    props.dispatch({ type: 'UPDATE-NEW-MESSAGE-TEXT', newText: text });
   };
 
   return (
