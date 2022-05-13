@@ -1,5 +1,5 @@
 import React from 'react';
-import { addMessageAC, onMessageChangeAC } from '../../Redux/state';
+import { addMessageAC, onMessageChangeAC } from '../../Redux/messageReduc';
 
 type AddMessagePropsType = {
   newMessage: string
@@ -18,10 +18,10 @@ export const AddMessage: React.FC<AddMessagePropsType> = (props) => {
 
   return (
     <div>
-            <textarea
-              value={props.newMessage}
-              onChange={onMessageChange}
-            />
+      <textarea
+        value={props.newMessage}
+        onChange={onMessageChange}
+      />
       <button
         onClick={addMessageHandler}
       >Send

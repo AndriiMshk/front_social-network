@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './components/Header/Header';
 import { Navbar } from './components/Navbar/Navbar';
@@ -9,6 +8,7 @@ import { News } from './components/News/News';
 import { Music } from './components/Music/Music';
 import { Settings } from './components/Settings/Settings';
 import { stateType } from './Redux/state';
+import { Route } from 'react-router-dom';
 
 type appPropsType = {
   state: stateType

@@ -1,3 +1,7 @@
+import { profileReducer } from './profileReduc';
+import { messageReducer } from './messageReduc';
+import { sidebarReducer } from './sidebarReduc';
+
 export type PostPropsType = {
   id?: number
   message: string
@@ -45,11 +49,6 @@ export type storeType = {
   dispatch: (action: any) => void
 
 }
-
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
-const ADD_MESSAGE = 'ADD-MESSAGE';
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT'
 
 export const store: storeType = {
   _state: {
@@ -109,32 +108,11 @@ export const store: storeType = {
   },
 
   dispatch(action: any) {
-    if (action.type === ADD_POST) {
-      let newPost = { id: 6, message: this._state.profile.newPostText, likeCounts: 0 };
-      this._state.profile.postsData.push(newPost);
-      this._state.profile.newPostText = '';
-      this._callSubscriber(this._state);
-    } else if (action.type === UPDATE_NEW_POST_TEXT) {
-      if (action.newText || action.newText !== '') { // поменял на !==
-        this._state.profile.newPostText = action.newText;
-      }
-      this._callSubscriber(this._state);
-    } else if (action.type === ADD_MESSAGE) {
-      let newMessage = { id: 6, message: this._state.dialogs.newMessageBody };
-      this._state.dialogs.messagesData.push(newMessage);
-      this._state.dialogs.newMessageBody = '';
-      this._callSubscriber(this._state);
-    } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
-      if (action.newText || action.newText !== '') { // поменял на !==
-        this._state.dialogs.newMessageBody = action.newText;
-      }
-      this._callSubscriber(this._state);
-    }
+    this._state.sidebar = sidebarReducer(this._state.sidebar, action)
+    this._state.profile = profileReducer(this._state.profile, action)
+    this._state.dialogs = messageReducer(this._state.dialogs, action)
+    this._callSubscriber(this._state);
   },
 };
 
-export const addPostAC = () => ({ type: ADD_POST });
-export const onPostChangeAC = (text: string | undefined) => ({ type: UPDATE_NEW_POST_TEXT, newText: text });
-export const addMessageAC = () => ({ type: ADD_MESSAGE });
-export const onMessageChangeAC = (text: string | undefined) => ({ type: UPDATE_NEW_MESSAGE_TEXT, newText: text });
 
