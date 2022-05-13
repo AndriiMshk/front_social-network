@@ -1,31 +1,30 @@
 import React from 'react';
+import { addMessageAC, onMessageChangeAC } from '../../Redux/state';
 
 type AddMessagePropsType = {
-  dispatch: any
+  newMessage: string
+  dispatch: (action: any) => void
 }
 
 export const AddMessage: React.FC<AddMessagePropsType> = (props) => {
 
-  let newMessage = React.createRef<HTMLTextAreaElement>();
-
   const addMessageHandler = () => {
-    props.dispatch({ type: 'ADD-MESSAGE' });
+    props.dispatch(addMessageAC());
   };
 
-  const onPostChange = () => {
-    let text = newMessage.current?.value;
-    props.dispatch({ type: 'UPDATE-NEW-MESSAGE-TEXT', newText: text });
+  const onMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    props.dispatch(onMessageChangeAC(event.target.value));
   };
 
   return (
     <div>
             <textarea
-              ref={newMessage}
-              onChange={onPostChange}
+              value={props.newMessage}
+              onChange={onMessageChange}
             />
       <button
         onClick={addMessageHandler}
-      >add
+      >Send
       </button>
     </div>
   );

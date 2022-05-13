@@ -6,7 +6,7 @@ import { PostPropsType, ProfileStateType } from '../../Redux/state';
 
 type ProfilePropsType = {
   profile: ProfileStateType
-  dispatch: any
+  dispatch: (action: any) => void
 
 
 }

@@ -2,17 +2,13 @@ import React from 'react';
 import style from './Dialogs.module.css';
 import { MessageItem } from './Massage/Message';
 import { DialogItem } from './DialogItem/Dialog';
-import { DialogItemPropsType } from '../../Redux/state';
+import { DialogItemPropsType, MessageStateType } from '../../Redux/state';
 import { MessageItemPropsType } from '../../Redux/state';
 import { AddMessage } from './AddMassage';
 
 type DialogsPropsType = {
-  dialogsState: {
-    dialogsData: DialogItemPropsType[]
-    messagesData: MessageItemPropsType[]
-  }
-  dispatch: any
-
+  dialogsState: MessageStateType
+  dispatch: (action: any) => void
 }
 
 export const Dialogs: React.FC<DialogsPropsType> = (props) => {
@@ -37,6 +33,7 @@ export const Dialogs: React.FC<DialogsPropsType> = (props) => {
           />),
         )}
         <AddMessage
+          newMessage={props.dialogsState.newMessageBody}
           dispatch={props.dispatch}
         />
       </div>
