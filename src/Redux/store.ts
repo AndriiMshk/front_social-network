@@ -1,7 +1,3 @@
-import { profileReducer } from './profileReduc';
-import { messageReducer } from './messageReduc';
-import { sidebarReducer } from './sidebarReduc';
-
 export type PostPropsType = {
   id?: number
   message: string
@@ -41,10 +37,10 @@ export type stateType = {
 export type storeType = {
   _state: stateType
 
-  _callSubscriber: (state: stateType) => void
+  _callSubscriber: any //(state: stateType) => void
 
-  getState: () => stateType
-  subscribe: (observer: (state: stateType) => void) => void
+  getState: any //() => stateType
+  subscribe: any //(observer: (state: stateType) => void) => void
 
   dispatch: (action: any) => void
 
@@ -96,7 +92,7 @@ export const store: storeType = {
     },
   },
 
-  _callSubscriber(state: stateType) {
+  _callSubscriber() {
     console.log('state_changed');
   },
 
@@ -108,9 +104,9 @@ export const store: storeType = {
   },
 
   dispatch(action: any) {
-    this._state.sidebar = sidebarReducer(this._state.sidebar, action)
-    this._state.profile = profileReducer(this._state.profile, action)
-    this._state.dialogs = messageReducer(this._state.dialogs, action)
+    // this._state.sidebar = sidebarReducer(this._state.sidebar, action)
+    // this._state.profile = profileReducer(this._state.profile, action)
+    // this._state.dialogs = messageReducer(this._state.dialogs, action)
     this._callSubscriber(this._state);
   },
 };

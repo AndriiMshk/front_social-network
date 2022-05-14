@@ -2,7 +2,7 @@ import React from 'react';
 import style from './MyPosts.module.css';
 import { Post } from './MyPost/Post.';
 import { addPostAC, onPostChangeAC } from '../../../Redux/profileReduc';
-import { PostPropsType } from '../../../Redux/state';
+import { PostPropsType } from '../../../Redux/store';
 
 type MyPostsPropsType = {
   postsData: PostPropsType[]
@@ -10,17 +10,17 @@ type MyPostsPropsType = {
   dispatch: (action: any) => void
 }
 
-export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
+export const MyPosts: React.FC<any> = (props) => {
 
   let postElement = React.createRef<HTMLTextAreaElement>();
 
-  const onPostChange = () => {
+  const onPostChangeHandler = () => {
     let text = postElement.current?.value;
-    props.dispatch(onPostChangeAC(text));
+    props.onPostChange(text)
   };
 
   const addPostHandler = () => {
-    props.dispatch(addPostAC());
+    props.addPost()
   };
 
   return (
@@ -31,7 +31,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
           <textarea
             ref={postElement}
             value={props.newPostText}
-            onChange={onPostChange}
+            onChange={onPostChangeHandler}
           />
         </div>
         <div>
@@ -42,7 +42,7 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
         </div>
       </div>
       <div className={style.posts}>
-        {props.postsData.map((p: any, key: number) => (
+        {props.posts.map((p: any, key: number) => (
           <Post
             key={key}
             message={p.message}

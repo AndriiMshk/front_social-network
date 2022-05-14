@@ -6,14 +6,14 @@ type AddMessagePropsType = {
   dispatch: (action: any) => void
 }
 
-export const AddMessage: React.FC<AddMessagePropsType> = (props) => {
+export const AddMessage: React.FC<any> = (props) => {
 
   const addMessageHandler = () => {
-    props.dispatch(addMessageAC());
+    props.addMessage();
   };
 
   const onMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    props.dispatch(onMessageChangeAC(event.target.value));
+    props.onMessageChange(event.target.value);
   };
 
   return (
