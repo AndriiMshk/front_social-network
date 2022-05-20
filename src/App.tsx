@@ -12,12 +12,12 @@ import { Route } from 'react-router-dom';
 import { DialogsContainer } from './components/Dialogs/DialogsContainer';
 
 type appPropsType = {
-  store: storeType
+  store: any
   // dispatch: (action: any) => void
 }
 
-const App: React.FC<appPropsType> = (props) => {
-  const state = props.store.getState()
+const App: React.FC<any> = (props) => {
+    const state = props.store.getState()
   return (
     <div className="app-wrapper">
       <Header />
@@ -32,7 +32,7 @@ const App: React.FC<appPropsType> = (props) => {
         } />
         <Route path={'/dialogs'} render={() =>
           <DialogsContainer
-            store={props.store}
+            // store={props.store}
             // dialogsState={state.dialogs}
             // dispatch={props.dispatch}
           />

@@ -12,22 +12,28 @@ const initialState: ProfileStateType = {
   newPostText: '',
 };
 
-export const profileReducer = (state = initialState, action: any) => {
+type actionType = addPostACType | onPostChangeACType
+
+export const profileReducer = (state = initialState, action: actionType) => {
   switch (action.type) {
     case ADD_POST:
-      let newPost = { id: 6, message: state.newPostText, likeCounts: 0 };
-      state.postsData.push(newPost);
-      state.newPostText = '';
-      return state;
+      return {
+        ...state,
+        postsData: [
+          ...state.postsData,
+          { id: state.postsData.length + 1, message: state.newPostText, likeCounts: 0 },
+        ],
+        newPostText: '',
+      };
     case UPDATE_NEW_POST_TEXT:
-      if (action.newText || action.newText !== '') { // поменял на !==
-        state.newPostText = action.newText;
-      }
-      return state;
+      return { ...state, newPostText: action.newText };
     default:
       return state;
   }
 };
 
-export const addPostAC = () => ({ type: ADD_POST });
-export const onPostChangeAC = (text: string | undefined) => ({ type: UPDATE_NEW_POST_TEXT, newText: text });
+type addPostACType = ReturnType<typeof addPostAC>
+type onPostChangeACType = ReturnType<typeof onPostChangeAC>
+
+export const addPostAC = () => ({ type: ADD_POST } as const);
+export const onPostChangeAC = (text: string) => ({ type: UPDATE_NEW_POST_TEXT, newText: text } as const);

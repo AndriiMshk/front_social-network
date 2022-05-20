@@ -19,7 +19,7 @@ export const Dialogs: React.FC<any> = (props) => {
     <div className={style.dialogs}>
       <div className={style.dialogsItems}>
         Names
-        {props.dialogsState.dialogsData.map((d: DialogItemPropsType, key: number) => (
+        {props.dialogs.dialogs.dialogsData.map((d: DialogItemPropsType, key: number) => (
           <DialogItem
             key={key}
             name={d.name}
@@ -29,14 +29,14 @@ export const Dialogs: React.FC<any> = (props) => {
       </div>
       <div className={style.messages}>
         Massages
-        {props.dialogsState.messagesData.map((m: MessageItemPropsType, key: number) => (
+        {props.dialogs.dialogs.messagesData.map((m: MessageItemPropsType, key: number) => (
           <MessageItem
             key={key}
             message={m.message}
           />),
         )}
         <AddMessage
-          newMessage={props.dialogsState.newMessageBody}
+          newMessage={props.dialogs.dialogs.newMessageBody}
           addMessage={props.addMessage}
           onMessageChange={props.onMessageChange}
         />

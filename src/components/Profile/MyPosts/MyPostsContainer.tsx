@@ -1,8 +1,9 @@
 import React from 'react';
 import { Post } from './MyPost/Post.';
 import { addPostAC, onPostChangeAC } from '../../../Redux/profileReduc';
-import { PostPropsType, storeType } from '../../../Redux/store';
+import { PostPropsType, ProfileStateType, storeType } from '../../../Redux/store';
 import { MyPosts } from './MyPosts';
+import { connect } from 'react-redux';
 
 type MyPostsPropsType = {
   store: storeType
@@ -12,22 +13,20 @@ type MyPostsPropsType = {
   // dispatch: (action: any) => void
 }
 
-export const MyPostsContainer: React.FC<MyPostsPropsType> = (props) => {
 
-  const state = props.store.getState()
 
-  const onPostChange = (text: string) => {
-    props.store.dispatch(onPostChangeAC(text));
+const mapStateToProps = (state: any) => {
+  return {
+    posts: state.profile.postsData,
+    newPostText: state.profile.newPostText,
   };
-
-  const addPost = () => {
-    props.store.dispatch(addPostAC());
-  };
-
-  return (<MyPosts
-    posts={state.profile.postsData}
-    newPostText={state.profile.newPostText}
-    onPostChange={onPostChange}
-    addPost={addPost}
-  />);
 };
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    addPost: () => {dispatch(addPostAC())},
+    onPostChange: (text: string) => {dispatch(onPostChangeAC(text))}
+  };
+};
+
+export const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);

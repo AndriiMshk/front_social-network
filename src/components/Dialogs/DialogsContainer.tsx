@@ -1,37 +1,21 @@
 import React from 'react';
-// @ts-ignore
-import style from './Dialogs.module.css';
-import { MessageItem } from './Massage/Message';
-import { DialogItem } from './DialogItem/Dialog';
-import { DialogItemPropsType, MessageStateType, storeType } from '../../Redux/store';
-import { MessageItemPropsType } from '../../Redux/store';
-import { AddMessage } from './AddMassage';
+import { MessageStateType } from '../../Redux/store';
 import { Dialogs } from './Dialogs';
 import { addMessageAC, onMessageChangeAC } from '../../Redux/messageReduc';
+import { connect } from 'react-redux';
+import { store } from '../../Redux/redux-store';
 
-type DialogsContainerPropsType = {
-  store: storeType
+const mapStateToProps = (state: any) => {
+  return {
+    dialogs: state
+  }
 }
 
-export const DialogsContainer: React.FC<DialogsContainerPropsType> = (props) => {
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    addMessage: () => {dispatch(addMessageAC());},
+    onMessageChange: (newText: string) => {dispatch(onMessageChangeAC(newText));}
+  }
+}
 
-  const state = props.store.getState()
-
-  const addMessage = () => {
-    props.store.dispatch(addMessageAC());
-  };
-
-  const onMessageChange = (newText: string) => {
-    props.store.dispatch(onMessageChangeAC(newText));
-  };
-
-  return (
-    <div className={style.dialogs}>
-     <Dialogs
-       dialogsState={state.dialogs}
-       addMessage={addMessage}
-       onMessageChange={onMessageChange}
-     />
-    </div>
-  );
-};
+export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)

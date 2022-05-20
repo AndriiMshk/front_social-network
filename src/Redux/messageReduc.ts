@@ -17,24 +17,33 @@ const initialState: MessageStateType = {
     { id: 3, name: 'name3' },
     { id: 4, name: 'name4' },
   ],
-}
+};
 
-export const messageReducer = (state = initialState, action: any) => {
+type ActionType = addMessageACType | onMessageChangeACType
+
+export const messageReducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
     case ADD_MESSAGE:
-      let newMessage = { id: 6, message: state.newMessageBody };
-      state.messagesData.push(newMessage);
-      state.newMessageBody = '';
-      return state;
+      return {
+        ...state,
+        messagesData: [
+          ...state.messagesData,
+          {
+            id: state.messagesData.length + 1,
+            message: state.newMessageBody,
+          },
+        ],
+        newMessageBody: '',
+      };
     case UPDATE_NEW_MESSAGE_TEXT:
-      if (action.newText || action.newText !== '') { // поменял на !==
-        state.newMessageBody = action.newText;
-      }
-      return state;
+      return { ...state, newMessageBody: action.newText };
     default:
       return state;
   }
 };
 
-export const addMessageAC = () => ({ type: ADD_MESSAGE });
-export const onMessageChangeAC = (text: string | undefined) => ({ type: UPDATE_NEW_MESSAGE_TEXT, newText: text });
+type addMessageACType = ReturnType<typeof addMessageAC>
+type onMessageChangeACType = ReturnType<typeof onMessageChangeAC>
+
+export const addMessageAC = () => ({ type: ADD_MESSAGE } as const);
+export const onMessageChangeAC = (text: string) => ({ type: UPDATE_NEW_MESSAGE_TEXT, newText: text } as const);
