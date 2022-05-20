@@ -10,6 +10,7 @@ import { Settings } from './components/Settings/Settings';
 import { stateType, storeType } from './Redux/store';
 import { Route } from 'react-router-dom';
 import { DialogsContainer } from './components/Dialogs/DialogsContainer';
+import { Users, UsersContainer } from './components/Users/Users';
 
 type appPropsType = {
   store: any
@@ -21,13 +22,16 @@ const App: React.FC<any> = (props) => {
   return (
     <div className="app-wrapper">
       <Header />
+      {/*<Route path={'/navbar'} render={() => <Navbar*/}
+      {/*  navbarState={state.sidebar}*/}
+      {/*/>}/>*/}
       <Navbar
         navbarState={state.sidebar}
       />
       <div className="app-wrapper-content">
         <Route path={'/profile'} render={() =>
           <Profile
-            store={props.store}
+            // store={props.store}
           />
         } />
         <Route path={'/dialogs'} render={() =>
@@ -37,6 +41,7 @@ const App: React.FC<any> = (props) => {
             // dispatch={props.dispatch}
           />
         } />
+        <Route path={'/users'} render={() => <UsersContainer/>}/>
         <Route path={'/news'} component={News} />
         <Route path={'/music'} component={Music} />
         <Route path={'/settings'} component={Settings} />

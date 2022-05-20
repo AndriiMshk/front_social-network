@@ -13,12 +13,12 @@ type ProfilePropsType = {
 
 }
 
-export const Profile: React.FC<ProfilePropsType> = (props) => {
+export const Profile: React.FC<any> = (props) => {
   return (
     <div>
       <ProfileInfo />
       <MyPostsContainer
-       store={props.store}
+       // store={props.store}
       />
     </div>
   );
