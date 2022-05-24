@@ -2,26 +2,23 @@ import React from 'react';
 import style from './Dialogs.module.css';
 import { MessageItem } from './Massage/Message';
 import { DialogItem } from './DialogItem/Dialog';
-import { DialogItemPropsType, MessageStateType, storeType } from '../../Redux/store';
-import { MessageItemPropsType } from '../../Redux/store';
+import { DialogItemPropsType, MessageItemPropsType, MessageStateType } from '../../Redux/store';
 import { AddMessage } from './AddMassage';
 
 type DialogsPropsType = {
-  // store: storeType
-  dialogsState: MessageStateType
-  // dispatch: (action: any) => void
-  // 1
-  // 2
+  dialogs: MessageStateType
+  addMessage: () => void
+  onMessageChange: (newText: string) => void
 }
 
-export const Dialogs: React.FC<any> = (props) => {
+export const Dialogs: React.FC<DialogsPropsType> = (props) => {
   return (
     <div className={style.dialogs}>
       <div className={style.dialogsItems}>
         Names
-        {props.dialogs.dialogs.dialogsData.map((d: DialogItemPropsType, key: number) => (
+        {props.dialogs.dialogsData.map((d: DialogItemPropsType) => (
           <DialogItem
-            key={key}
+            key={d.id}
             name={d.name}
             id={d.id}
           />),
@@ -29,14 +26,14 @@ export const Dialogs: React.FC<any> = (props) => {
       </div>
       <div className={style.messages}>
         Massages
-        {props.dialogs.dialogs.messagesData.map((m: MessageItemPropsType, key: number) => (
+        {props.dialogs.messagesData.map((m: MessageItemPropsType) => (
           <MessageItem
-            key={key}
+            key={m.id}
             message={m.message}
           />),
         )}
         <AddMessage
-          newMessage={props.dialogs.dialogs.newMessageBody}
+          newMessage={props.dialogs.newMessageBody}
           addMessage={props.addMessage}
           onMessageChange={props.onMessageChange}
         />

@@ -1,12 +1,12 @@
 import React from 'react';
-import { addMessageAC, onMessageChangeAC } from '../../Redux/messageReduc';
 
 type AddMessagePropsType = {
   newMessage: string
-  dispatch: (action: any) => void
+  addMessage: () => void
+  onMessageChange: (newText: string) => void
 }
 
-export const AddMessage: React.FC<any> = (props) => {
+export const AddMessage: React.FC<AddMessagePropsType> = (props) => {
 
   const addMessageHandler = () => {
     props.addMessage();

@@ -1,26 +1,28 @@
 import React from 'react';
 import style from './MyPosts.module.css';
 import { Post } from './MyPost/Post.';
-import { addPostAC, onPostChangeAC } from '../../../Redux/profileReduc';
 import { PostPropsType } from '../../../Redux/store';
 
 type MyPostsPropsType = {
-  postsData: PostPropsType[]
+  posts: PostPropsType[]
   newPostText: string
-  dispatch: (action: any) => void
+  addPost: () => void
+  onPostChange: (text: string) => void
 }
 
-export const MyPosts: React.FC<any> = (props) => {
+export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
 
   let postElement = React.createRef<HTMLTextAreaElement>();
 
   const onPostChangeHandler = () => {
     let text = postElement.current?.value;
-    props.onPostChange(text)
+    if (text) {
+      props.onPostChange(text);
+    }
   };
 
   const addPostHandler = () => {
-    props.addPost()
+    props.addPost();
   };
 
   return (
@@ -42,9 +44,9 @@ export const MyPosts: React.FC<any> = (props) => {
         </div>
       </div>
       <div className={style.posts}>
-        {props.posts.map((p: any, key: number) => (
+        {props.posts.map((p: PostPropsType) => (
           <Post
-            key={key}
+            key={p.id}
             message={p.message}
             likeCounts={p.likeCounts}
           />),

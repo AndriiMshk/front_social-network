@@ -1,21 +1,10 @@
 import React from 'react';
-import { Post } from './MyPost/Post.';
 import { addPostAC, onPostChangeAC } from '../../../Redux/profileReduc';
-import { PostPropsType, ProfileStateType, storeType } from '../../../Redux/store';
 import { MyPosts } from './MyPosts';
 import { connect } from 'react-redux';
+import { stateType } from '../../../Redux/store';
 
-type MyPostsPropsType = {
-  store: storeType
-
-  // postsData: PostPropsType[]
-  // newPostText: string
-  // dispatch: (action: any) => void
-}
-
-
-
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: stateType) => {
   return {
     posts: state.profile.postsData,
     newPostText: state.profile.newPostText,
@@ -24,8 +13,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    addPost: () => {dispatch(addPostAC())},
-    onPostChange: (text: string) => {dispatch(onPostChangeAC(text))}
+    addPost: () => {dispatch(addPostAC());},
+    onPostChange: (text: string) => {dispatch(onPostChangeAC(text));},
   };
 };
 

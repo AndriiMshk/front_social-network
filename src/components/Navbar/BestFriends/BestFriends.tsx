@@ -1,6 +1,9 @@
 import React from "react";
 import {friendsType} from "../../../Redux/store";
 import style from './BestFriedns.module.css'
+import { addPostAC, onPostChangeAC } from '../../../Redux/profileReduc';
+import { connect } from 'react-redux';
+import { MyPosts } from '../../Profile/MyPosts/MyPosts';
 
 type BestFriendsPropsType = {
     bestFriends: friendsType[]
@@ -21,3 +24,16 @@ export const BestFriends: React.FC<BestFriendsPropsType> = (props) => {
         </div>
     )
 }
+
+const mapStateToProps = (state: any) => {
+  return {
+bestFriends: state.sidebar.friends
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+  };
+};
+
+export const BestFriendsContainer = connect(mapStateToProps, mapDispatchToProps)(BestFriends);
