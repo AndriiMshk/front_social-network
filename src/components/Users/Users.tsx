@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import { connect } from 'react-redux';
-import { followAC, setUsersAC, unFollowAC } from '../../Redux/users-reduc';
-import userPhoto from '../../assets/imgs/avatar.png'
+import userPhoto from '../../assets/imgs/avatar.png';
 
 type UsersPropsType = {
   users: any[]
@@ -11,17 +9,22 @@ type UsersPropsType = {
   setUsers: (users: any) => void
 }
 
-export const Users: React.FC<UsersPropsType> = (props) => {
+class Users extends React.Component<UsersPropsType, any> {
 
-  if (props.users.length === 0) {
-    axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response)=> {
-      props.setUsers(response.data.items)
-    });
+  componentDidMount(): void {
+    if (this.props.users.length === 0) {
+      axios
+        .get('https://social-network.samuraijs.com/api/1.0/users')
+        .then((response) => {
+          this.props.setUsers(response.data.items);
+        });
+    }
   }
 
-  return (
-    <div>
-      {props.users.map((user: any) => <div key={user.id}>
+  render(): any {
+    return (
+      <div>
+        {this.props.users.map((user: any) => <div key={user.id}>
         <span>
           <div className="avatar">
             <img src={user.photos.small
@@ -31,14 +34,14 @@ export const Users: React.FC<UsersPropsType> = (props) => {
           <div>
             {user.followed
               ? <button
-                onClick={() => props.unFollow(user.id)}
+                onClick={() => this.props.unFollow(user.id)}
               >follow</button>
               : <button
-                onClick={() => props.follow(user.id)}
+                onClick={() => this.props.follow(user.id)}
               >unFollow</button>}
           </div>
         </span>
-        <span>
+          <span>
           <span>
             <div>{user.name}</div>
             <div>{user.status}</div>
@@ -48,20 +51,11 @@ export const Users: React.FC<UsersPropsType> = (props) => {
             <div>{'user.location.city'}</div>
           </span>
         </span>
-        {'user.fullName'}
-      </div>)}
-    </div>
-  );
-};
-
-const mapStateToProps = (state: any) => ({ users: state.usersPage.users });
-
-const mapDispatchToProps = (dispatch: any) => (
-  {
-    follow: (id: number) => dispatch(followAC(id)),
-    unFollow: (id: number) => dispatch(unFollowAC(id)),
-    setUsers: (users: any) => dispatch(setUsersAC(users)),
+          {'user.fullName'}
+        </div>)}
+      </div>
+    );
   }
-);
+}
 
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users);
+export default Users;
