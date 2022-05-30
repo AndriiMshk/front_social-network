@@ -4,8 +4,12 @@ const initialState = {
   users: [],
   pageSize: 5,
   totalUsersCount: 0,
-  currentPage: 4,
+  currentPage: 1,
 };
+
+type initialStateType = typeof initialState
+
+//fix any
 
 type actionType = followACType | unFollowACType | setUsersACType | setCurrentPageACType | setTotalUsersCountACType
 
@@ -42,7 +46,7 @@ type setTotalUsersCountACType = ReturnType<typeof setTotalUsersCountAC>
 
 export const followAC = (userId: number) => ({ type: 'FOLLOW', payload: { id: userId } } as const);
 export const unFollowAC = (userId: number) => ({ type: 'UNFOLLOW', payload: { id: userId } } as const);
-export const setUsersAC = (users: any) => ({ type: 'SET-USERS', payload: users } as const);
+export const setUsersAC = (users: UserType[]) => ({ type: 'SET-USERS', payload: users } as const);
 export const setCurrentPageAC = (page: number) => ({ type: 'SET-CURRENT-PAGE', payload: { page } } as const);
 export const setTotalUsersCountAC = (usersCount: number) => ({
   type: 'SET-TOTAL-USERS-COUNT',
