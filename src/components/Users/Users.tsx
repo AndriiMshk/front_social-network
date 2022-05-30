@@ -1,30 +1,69 @@
 import axios from 'axios';
 import React from 'react';
 import userPhoto from '../../assets/imgs/avatar.png';
+import { UsersTypeFromRedux, UserType } from '../../Redux/redux-store';
+import style from './users.module.css';
 
 type UsersPropsType = {
-  users: any[]
+  users: UsersTypeFromRedux
   follow: (id: number) => void
   unFollow: (id: number) => void
-  setUsers: (users: any) => void
+  setUsers: (users: UsersTypeFromRedux) => void
+  pageSize: number
+  totalUsersCount: number
+  currentPage: number
+  setCurrentPage: (page: number) => void
+  setTotalUsersCount: (usersCount: number) => void
 }
 
-class Users extends React.Component<UsersPropsType, any> {
-
+class Users extends React.Component<UsersPropsType, UsersTypeFromRedux> {
   componentDidMount(): void {
     if (this.props.users.length === 0) {
       axios
-        .get('https://social-network.samuraijs.com/api/1.0/users')
+        .get(
+          `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
         .then((response) => {
           this.props.setUsers(response.data.items);
+          this.props.setTotalUsersCount(response.data.totalCount)
         });
     }
   }
 
+  onPageChangeHandler = (page: number) => {
+    this.props.setCurrentPage(page);
+    axios
+      .get(
+        `https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`)
+      .then((response) => {
+        this.props.setUsers(response.data.items);
+      });
+  };
+
+//fix ANY
   render(): any {
+    console.log(this.props.totalUsersCount);
+    const pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+
+    const pages = [];
+
+    for (let i = 1; i <= pagesCount; i++) {
+      pages.push(i);
+    }
+
     return (
       <div>
-        {this.props.users.map((user: any) => <div key={user.id}>
+        <div>
+          {pages.map((el, index) =>
+            <span
+              key={index}
+              onClick={() => this.onPageChangeHandler(el)}
+              className={this.props.currentPage === el
+                ? style.selectedPage
+                : ''}>{el + ' '}
+            </span>,
+          )}
+        </div>
+        {this.props.users.map((user: UserType) => <div key={user.id}>
         <span>
           <div className="avatar">
             <img src={user.photos.small

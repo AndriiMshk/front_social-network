@@ -14,3 +14,23 @@ const reducers = combineReducers(
 );
 
 export const store = createStore(reducers);
+
+// dobavil type sam ))
+export const stateFromRedux = store.getState();
+export const usersFromRedux = stateFromRedux.usersPage;
+
+export type StateTypeFromRedux = typeof stateFromRedux
+export type UsersTypeFromRedux = typeof usersFromRedux
+
+export type UserType = {
+  name: string
+  id: number
+  uniqueUrlName: string
+  photos: {
+    small: string
+    large: string
+  },
+  status: string
+  followed: boolean
+
+}

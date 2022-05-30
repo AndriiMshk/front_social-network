@@ -3,6 +3,7 @@ import { addPostAC, onPostChangeAC } from '../../../Redux/profileReduc';
 import { MyPosts } from './MyPosts';
 import { connect } from 'react-redux';
 import { stateType } from '../../../Redux/store';
+import { Dispatch } from 'redux';
 
 const mapStateToProps = (state: stateType) => {
   return {
@@ -11,7 +12,7 @@ const mapStateToProps = (state: stateType) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     addPost: () => {dispatch(addPostAC());},
     onPostChange: (text: string) => {dispatch(onPostChangeAC(text));},
