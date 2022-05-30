@@ -60,7 +60,7 @@ class UsersAPIComponent extends React.Component<UsersPropsType, UsersTypeFromRed
     return (
       <>
         {this.props.isFetching
-          ? <Preloader/>
+          ? <Preloader />
           : <Users
             totalUsersCount={this.props.totalUsersCount}
             pageSize={this.props.pageSize}
@@ -97,4 +97,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => (
   }
 );
 
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersAPIComponent);
+// можно удалить АС как в 58 уроке но я пока оставлю так
+
+export const UsersContainer = connect(mapStateToProps,
+  {
+    follow: followAC,
+    unFollow: unFollowAC,
+    setUsers: setUsersAC,
+    setCurrentPage: setCurrentPageAC,
+    setTotalUsersCount: setTotalUsersCountAC,
+    toggleIsFetching: toggleIsFetchingAC,
+  },
+)(UsersAPIComponent);
