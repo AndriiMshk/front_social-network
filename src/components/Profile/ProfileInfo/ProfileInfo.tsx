@@ -7,7 +7,6 @@ export const ProfileInfo: React.FC<any> = (props) => {
     return <Preloader />;
 
   }
-  console.log(props.profile);
   return (
     <div>
       <div className={style.backImg}>
