@@ -55,8 +55,8 @@ class UsersAPIComponent extends React.Component<UsersPropsType, UsersTypeFromRed
       });
   };
 
-//fix ANY
-  render(): any {
+
+  render() {
     return (
       <>
         {this.props.isFetching
