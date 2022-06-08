@@ -21,6 +21,10 @@ export const store = createStore(reducers);
 export const stateFromRedux = store.getState();
 export const usersFromRedux = stateFromRedux.usersPage;
 
+export const userAuthFromRedux = stateFromRedux.auth
+
+export type UserAuthTypeFromRedux = typeof userAuthFromRedux
+
 export type StateTypeFromRedux = typeof stateFromRedux
 export type UsersTypeFromRedux = typeof usersFromRedux
 

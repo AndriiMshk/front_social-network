@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { setUserProfile } from '../../Redux/profileReduc';
 import { withRouter } from 'react-router-dom';
 
+// тут тип эни бо нихуя не понятно как типизировать
+
 export class ProfileAPIComponent extends React.Component<any, any> {
 
   componentDidMount(): void {
@@ -19,8 +21,11 @@ export class ProfileAPIComponent extends React.Component<any, any> {
   }
 
   render() {
+    console.log(this.props);
     return (
-      <Profile {...this.props} profile={this.props.profile} />
+      <Profile
+                {...this.props}
+        profile={this.props.profile} />
     );
   }
 };
