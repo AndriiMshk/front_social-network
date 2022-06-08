@@ -34,7 +34,8 @@ class UsersAPIComponent extends React.Component<UsersPropsType, UsersTypeFromRed
     if (this.props.users.length === 0) {
       axios
         .get(
-          `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
+          `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,
+          { withCredentials: true })
         .then((response) => {
           this.props.toggleIsFetching(false);
           this.props.setUsers(response.data.items);
@@ -48,13 +49,13 @@ class UsersAPIComponent extends React.Component<UsersPropsType, UsersTypeFromRed
     this.props.setCurrentPage(page);
     axios
       .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`)
+        `https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`,
+        { withCredentials: true })
       .then((response) => {
         this.props.toggleIsFetching(false);
         this.props.setUsers(response.data.items);
       });
   };
-
 
   render() {
     return (
