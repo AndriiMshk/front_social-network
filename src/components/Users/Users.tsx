@@ -1,24 +1,33 @@
 import React from 'react';
 import style from './users.module.css';
 import { UserType } from '../../Redux/redux-store';
-import userPhoto from '../../assets/imgs/avatar.png';
-import { NavLink } from 'react-router-dom';
-import { usersAPI } from '../../api/api';
+import { UserItem } from './UserItem';
 
 type UsersPropsType = {
   totalUsersCount: number
   pageSize: number
   users: UserType[]
   currentPage: number
+  onPageChangeHandler: (page: number) => void
+
   unFollow: (id: number) => void
   follow: (id: number) => void
-  onPageChangeHandler: (page: number) => void
+  followingInProgress: (userId: number, inProgress: boolean) => void
+  isFollowingIngProgress: number[]
 }
-export const Users: React.FC<UsersPropsType> = (props) => {
+export const Users: React.FC<UsersPropsType> = (
+  {
+    totalUsersCount,
+    pageSize,
+    users,
+    currentPage,
+    onPageChangeHandler,
+  ...restProps},
+) => {
 
-  const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+  const pagesCount = Math.ceil(totalUsersCount / pageSize);
   const pages = [];
-  for (let i = props.currentPage - 2; i <= props.currentPage + 2; i++) {
+  for (let i = currentPage - 2; i <= currentPage + 2; i++) {
     if (i >= 1 && i <= pagesCount) {
       pages.push(i);
     }
@@ -28,71 +37,35 @@ export const Users: React.FC<UsersPropsType> = (props) => {
     <div>
       <div>
         <div>
-          {props.currentPage > 1
+          {currentPage > 1
             ? <span
-              onClick={() => props.onPageChangeHandler(1)}
+              onClick={() => onPageChangeHandler(1)}
             >{1}...</span>
             : null}
           {pages.map((el, index) =>
               <span
                 key={index}
-                onClick={() => props.onPageChangeHandler(el)}
-                className={props.currentPage === el
+                onClick={() => onPageChangeHandler(el)}
+                className={currentPage === el
                   ? style.selectedPage
                   : ''}>{` ${el} `}
           </span>,
           )}
-          {props.currentPage < pagesCount
+          {currentPage < pagesCount
             ? <span
-              onClick={() => props.onPageChangeHandler(pagesCount)}
+              onClick={() => onPageChangeHandler(pagesCount)}
             >...{pagesCount}</span>
             : null}
         </div>
       </div>
-      {props.users.map((user: UserType) => <div key={user.id}>
-          <span>
-            <div className="avatar">
-              <NavLink to={'/profile/' + user.id}>
-              <img src={user.photos.small
-                ? user.photos.small
-                : userPhoto} alt="avatar" />
-                </NavLink>
-            </div>
-            <div>
-              {user.followed
-                ? <button
-                  onClick={() => {
-                    usersAPI.unFollowDeleteRequest(user.id)
-                      .then((data) => {
-                        if (data.resultCode === 0) {
-                          props.unFollow(user.id);
-                        }
-                      });
-                  }}
-                >follow</button>
-                : <button
-                  onClick={() => {
-                    usersAPI.followPostRequest(user.id).then((data) => {
-                      if (data.resultCode === 0) {
-                        props.follow(user.id);
-                      }
-                    });
-                  }}
-                >unFollow</button>}
-                </div>
-                </span>
-        <span>
-                <span>
-                <div>{user.name}</div>
-                <div>{user.status}</div>
-                </span>
-                <span>
-                <div>{'user.location.country'}</div>
-                <div>{'user.location.city'}</div>
-                </span>
-                </span>
-        {'user.fullName'}
-      </div>)}
+      {users.map((user: UserType) =>
+        <UserItem
+          key={user.id}
+          user={user}
+          {...restProps}
+        />,
+      )}
     </div>
   );
 };
+

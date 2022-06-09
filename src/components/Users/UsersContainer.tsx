@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  followAC,
+  followAC, followingInProgressAC,
   setCurrentPageAC,
   setTotalUsersCountAC,
   setUsersAC,
@@ -26,6 +26,8 @@ type UsersPropsType = {
   setTotalUsersCount: (usersCount: number) => void
   isFetching: boolean
   toggleIsFetching: (isFetching: boolean) => void
+  followingInProgress: (userId: number, inProgress: boolean) => void
+  isFollowingIngProgress: number[]
 }
 
 class UsersAPIComponent extends React.Component<UsersPropsType, UsersTypeFromRedux> {
@@ -62,6 +64,8 @@ class UsersAPIComponent extends React.Component<UsersPropsType, UsersTypeFromRed
             unFollow={this.props.unFollow}
             follow={this.props.follow}
             onPageChangeHandler={this.onPageChangeHandler}
+            followingInProgress={this.props.followingInProgress}
+            isFollowingIngProgress={this.props.isFollowingIngProgress}
           />
         }
       </>
@@ -76,6 +80,7 @@ const mapStateToProps = (state: StateTypeFromRedux) => (
     totalUsersCount: state.usersPage.totalUsersCount,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
+    isFollowingIngProgress: state.usersPage.followingInProgress
   }
 );
 
@@ -100,5 +105,6 @@ export const UsersContainer = connect(mapStateToProps,
     setCurrentPage: setCurrentPageAC,
     setTotalUsersCount: setTotalUsersCountAC,
     toggleIsFetching: toggleIsFetchingAC,
+    followingInProgress: followingInProgressAC
   },
 )(UsersAPIComponent);
