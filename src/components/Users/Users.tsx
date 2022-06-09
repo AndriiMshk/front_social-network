@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './users.module.css';
-import { UserType } from '../../Redux/redux-store';
 import { UserItem } from './UserItem';
+import { UserType } from '../../Redux/users-reduc';
 
 type UsersPropsType = {
   totalUsersCount: number
@@ -15,6 +15,7 @@ type UsersPropsType = {
   followingInProgress: (userId: number, inProgress: boolean) => void
   isFollowingIngProgress: number[]
 }
+
 export const Users: React.FC<UsersPropsType> = (
   {
     totalUsersCount,

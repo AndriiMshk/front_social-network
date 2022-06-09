@@ -3,13 +3,21 @@ import { Header } from './Header';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { setUserAuthDataAC } from '../../Redux/auth-reducer';
-import { StateTypeFromRedux, UserAuthTypeFromRedux } from '../../Redux/redux-store';
+import { UserAuthTypeFromRedux } from '../../Redux/redux-store';
 import { usersAPI } from '../../api/api';
 
 type HeaderPropsType = {
   isAuth: boolean
   login: string
   setUserAuthData: (userId: number, email: string, login: string) => void
+}
+
+type AuthStateType = {
+  email: string
+  isAuth: boolean
+  isFetching: boolean
+  login: string
+  userId: number
 }
 
 export class HeaderApiContainer extends React.Component<HeaderPropsType, UserAuthTypeFromRedux> {
@@ -32,9 +40,9 @@ export class HeaderApiContainer extends React.Component<HeaderPropsType, UserAut
   }
 }
 
-const mapStateToProps = (state: StateTypeFromRedux) => ({
-  isAuth: state.auth.isAuth,
-  login: state.auth.login,
+const mapStateToProps = (state: AuthStateType) => ({
+  isAuth: state.isAuth,
+  login: state.login,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => (

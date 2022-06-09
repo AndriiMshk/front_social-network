@@ -5,7 +5,7 @@ import { messageReducer } from './messageReduc';
 import { usersReducer } from './users-reduc';
 import { authReducer } from './auth-reducer';
 
-const reducers = combineReducers(
+const rootReducer = combineReducers(
   {
     sidebar: sidebarReducer,
     profile: profileReducer,
@@ -15,31 +15,13 @@ const reducers = combineReducers(
   },
 );
 
-export const store = createStore(reducers);
+export const store = createStore(rootReducer);
+export type StateTypeFromRedux = ReturnType<typeof rootReducer> // ROOT STATE TYPE
 
-// dobavil type sam ))
 export const stateFromRedux = store.getState();
-export const usersFromRedux = stateFromRedux.usersPage;
 
-export const userAuthFromRedux = stateFromRedux.auth
-
-export type UserAuthTypeFromRedux = typeof userAuthFromRedux
-
-export type StateTypeFromRedux = typeof stateFromRedux
-export type UsersTypeFromRedux = typeof usersFromRedux
-
-export type UserType = {
-  name: string
-  id: number
-  uniqueUrlName: string
-  photos: {
-    small: string
-    large: string
-  },
-  status: string
-  followed: boolean
-
-}
+export type UserAuthTypeFromRedux = typeof stateFromRedux.auth
+export type ProfileFromReduxType = typeof stateFromRedux.profile
 
 //@ts-ignore
 window.store = store;

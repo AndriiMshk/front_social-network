@@ -21,7 +21,7 @@ const initialState: MessageStateType = {
 
 type ActionType = addMessageACType | onMessageChangeACType
 
-export const messageReducer = (state = initialState, action: ActionType) => {
+export const messageReducer = (state: MessageStateType = initialState, action: ActionType): MessageStateType => {
   switch (action.type) {
     case ADD_MESSAGE:
       return {

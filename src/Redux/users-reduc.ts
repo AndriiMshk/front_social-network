@@ -1,4 +1,23 @@
-import { UserType } from './redux-store';
+export type UserType = {
+  name: string
+  id: number
+  uniqueUrlName: string
+  photos: {
+    small: string
+    large: string
+  },
+  status: string
+  followed: boolean
+}
+
+type initialStateType = {
+  users: UserType[]
+  pageSize: number
+  totalUsersCount: number
+  currentPage: number
+  isFetching: boolean
+  followingInProgress: number[]
+}
 
 const initialState = {
   users: [],
@@ -9,10 +28,6 @@ const initialState = {
   followingInProgress: [],
 };
 
-type initialStateType = typeof initialState
-
-//fix any
-
 type actionType = followACType
   | unFollowACType
   | setUsersACType
@@ -22,8 +37,8 @@ type actionType = followACType
   | followingInProgressACType
 
 export const usersReducer = (
-  state: any = initialState,
-  action: actionType) => {
+  state: initialStateType = initialState,
+  action: actionType): initialStateType => {
   switch (action.type) {
     case 'FOLLOW':
       return {

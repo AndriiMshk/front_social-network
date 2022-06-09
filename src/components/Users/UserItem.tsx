@@ -1,8 +1,8 @@
-import { UserType } from '../../Redux/redux-store';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import userPhoto from '../../assets/imgs/avatar.png';
 import { usersAPI } from '../../api/api';
+import { UserType } from '../../Redux/users-reduc';
 
 type UserItemPropsType = {
   user: UserType
@@ -53,15 +53,15 @@ export const UserItem: React.FC<UserItemPropsType> = (props) => {
                 </div>
                 </span>
       <span>
-                <span>
-                <div>{props.user.name}</div>
-                <div>{props.user.status}</div>
-                </span>
-                <span>
-                <div>{'user.location.country'}</div>
-                <div>{'user.location.city'}</div>
-                </span>
-                </span>
+          <span>
+            <div>{props.user.name}</div>
+            <div>{props.user.status}</div>
+          </span>
+          <span>
+            <div>{'user.location.country'}</div>
+            <div>{'user.location.city'}</div>
+          </span>
+        </span>
       {'user.fullName'}
     </div>);
 };

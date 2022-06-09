@@ -1,14 +1,13 @@
 import React from 'react';
 import s from './Navbar.module.css';
 import { NavLink } from 'react-router-dom';
-import { sidebarStateType } from '../../Redux/store';
-import { BestFriends, BestFriendsContainer } from './BestFriends/BestFriends';
+import { BestFriendsContainer } from './BestFriends/BestFriends';
 
 type NavbarPropsType = {
-  navbarState: sidebarStateType
+
 }
 
-export const Navbar: React.FC<any> = (props) => {
+export const Navbar: React.FC<NavbarPropsType> = (props) => {
   return (
     <nav className={s.nav}>
       <div className={s.item}>

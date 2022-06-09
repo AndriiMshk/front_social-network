@@ -1,12 +1,13 @@
 import React from 'react';
 import { ProfileInfo } from './ProfileInfo/ProfileInfo';
 import { MyPostsContainer } from './MyPosts/MyPostsContainer';
-import { log } from 'util';
+import { ProfileType } from './ProfileContainer';
 
-// тут тип эни бо нихуя не понятно как типизировать
+export type ProfilePropsTpe = {
+  profile: ProfileType | null
+}
 
-export const Profile: React.FC<any> = (props) => {
-  console.log(props);
+export const Profile: React.FC<ProfilePropsTpe> = (props) => {
   return (
     <div>
       <ProfileInfo profile={props.profile}/>

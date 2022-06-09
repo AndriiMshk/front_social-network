@@ -6,7 +6,7 @@ const initialState = {
   isFetching: false,
 };
 
-type ActionType = any
+type ActionType = setUserAuthDataACType
 
 export const authReducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
@@ -17,6 +17,8 @@ export const authReducer = (state = initialState, action: ActionType) => {
       return state;
   }
 };
+
+type setUserAuthDataACType = ReturnType<typeof setUserAuthDataAC>
 
 export const setUserAuthDataAC = (userId: number, email: string, login: string) => (
   { type: 'SET-USER-DATA', payload: { userId, email, login } } as const);

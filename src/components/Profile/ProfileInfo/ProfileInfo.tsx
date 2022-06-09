@@ -1,11 +1,12 @@
 import React from 'react';
 import style from './ProfileInfo.module.css';
 import { Preloader } from '../../common/Preloader/Preloader';
+import { ProfilePropsTpe } from '../Profile';
 
-export const ProfileInfo: React.FC<any> = (props) => {
+export const ProfileInfo: React.FC<ProfilePropsTpe> = (props) => {
+
   if (!props.profile) {
     return <Preloader />;
-
   }
   return (
     <div>
@@ -15,11 +16,11 @@ export const ProfileInfo: React.FC<any> = (props) => {
       </div>
       <div className={style.descriptionBlock}>
         <img src={props.profile.photos.small} alt="" />
-        <hr/>
+        <hr />
         <span>{props.profile.fullName}</span>
         <p>{props.profile.aboutMe}</p>
         <span>facebook: {props.profile.contacts.facebook}</span>
-        <hr/>
+        <hr />
         <span>github: {props.profile.contacts.github}</span>
         {/*AVA + Description*/}
       </div>
