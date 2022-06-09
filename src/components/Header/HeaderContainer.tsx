@@ -3,7 +3,7 @@ import { Header } from './Header';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { setUserAuthDataAC } from '../../Redux/auth-reducer';
-import { UserAuthTypeFromRedux } from '../../Redux/redux-store';
+import { StateTypeFromRedux, UserAuthTypeFromRedux } from '../../Redux/redux-store';
 import { usersAPI } from '../../api/api';
 
 type HeaderPropsType = {
@@ -33,6 +33,7 @@ export class HeaderApiContainer extends React.Component<HeaderPropsType, UserAut
   }
 
   render(): React.ReactNode {
+
     return <Header
       isAuth={this.props.isAuth}
       login={this.props.login}
@@ -40,12 +41,21 @@ export class HeaderApiContainer extends React.Component<HeaderPropsType, UserAut
   }
 }
 
-const mapStateToProps = (state: AuthStateType) => ({
-  isAuth: state.isAuth,
-  login: state.login,
+type mapStateToPropsType = {
+  isAuth: boolean
+  login: string
+}
+
+type mapDispatchToPropsType = {
+  setUserAuthData: (userId: number, email: string, login: string) => void
+}
+
+const mapStateToProps = (state: any): mapStateToPropsType => ({ // ANY CAN NOT TO FIX
+  isAuth: state.auth.isAuth,
+  login: state.auth.login,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => (
+const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => (
   {
     setUserAuthData: (userId: number, email: string, login: string) => dispatch(
       setUserAuthDataAC(userId, email, login)),
