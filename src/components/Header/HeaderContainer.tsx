@@ -12,14 +12,6 @@ type HeaderPropsType = {
   setUserAuthData: (userId: number, email: string, login: string) => void
 }
 
-type AuthStateType = {
-  email: string
-  isAuth: boolean
-  isFetching: boolean
-  login: string
-  userId: number
-}
-
 export class HeaderApiContainer extends React.Component<HeaderPropsType, UserAuthTypeFromRedux> {
 
   componentDidMount(): void {
@@ -33,7 +25,6 @@ export class HeaderApiContainer extends React.Component<HeaderPropsType, UserAut
   }
 
   render(): React.ReactNode {
-
     return <Header
       isAuth={this.props.isAuth}
       login={this.props.login}
@@ -50,7 +41,7 @@ type mapDispatchToPropsType = {
   setUserAuthData: (userId: number, email: string, login: string) => void
 }
 
-const mapStateToProps = (state: any): mapStateToPropsType => ({ // ANY CAN NOT TO FIX
+const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
   isAuth: state.auth.isAuth,
   login: state.auth.login,
 });

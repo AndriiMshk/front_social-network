@@ -25,4 +25,3 @@ export type ProfileFromReduxType = typeof stateFromRedux.profile
 
 //@ts-ignore
 window.store = store;
-

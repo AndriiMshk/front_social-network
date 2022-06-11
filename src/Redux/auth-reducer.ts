@@ -1,18 +1,25 @@
+interface initialStateType {
+  userId: number | null
+  email: string,
+  login: string,
+  isAuth: boolean,
+  isFetching: boolean,
+}
+
 const initialState = {
   userId: null,
-  email: null,
-  login: null,
+  email: '',
+  login: '',
   isAuth: false,
   isFetching: false,
 };
 
 type ActionType = setUserAuthDataACType
 
-export const authReducer = (state = initialState, action: ActionType) => {
+export const authReducer = (state: initialStateType = initialState, action: ActionType): initialStateType => {
   switch (action.type) {
     case 'SET-USER-DATA':
       return { ...state, ...action.payload, isAuth: true };
-
     default:
       return state;
   }
