@@ -9,10 +9,8 @@ type UsersPropsType = {
   users: UserType[]
   currentPage: number
   onPageChangeHandler: (page: number) => void
-
-  unFollow: (id: number) => void
-  follow: (id: number) => void
-  followingInProgress: (userId: number, inProgress: boolean) => void
+  unFollow: (usedId: number) => void
+  follow: (usedId: number) => void
   isFollowingIngProgress: number[]
 }
 
@@ -23,7 +21,8 @@ export const Users: React.FC<UsersPropsType> = (
     users,
     currentPage,
     onPageChangeHandler,
-  ...restProps},
+    ...restProps
+  },
 ) => {
 
   const pagesCount = Math.ceil(totalUsersCount / pageSize);

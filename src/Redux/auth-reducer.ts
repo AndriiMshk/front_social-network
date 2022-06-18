@@ -1,3 +1,6 @@
+import { usersAPI } from '../api/api';
+import { Dispatch } from 'redux';
+
 interface initialStateType {
   userId: number | null
   email: string,
@@ -29,3 +32,15 @@ type setUserAuthDataACType = ReturnType<typeof setUserAuthDataAC>
 
 export const setUserAuthDataAC = (userId: number, email: string, login: string) => (
   { type: 'SET-USER-DATA', payload: { userId, email, login } } as const);
+
+export const authMeTC = () => {
+  return (dispatch: Dispatch) => {
+    usersAPI.authGetRequest()
+      .then((data) => {
+        if (data.resultCode === 0) {
+          const { id, login, email } = data.data;
+          dispatch(setUserAuthDataAC(id, email, login));
+        }
+      });
+  };
+};

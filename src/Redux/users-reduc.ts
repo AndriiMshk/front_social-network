@@ -1,3 +1,6 @@
+import { Dispatch } from 'redux';
+import { usersAPI } from '../api/api';
+
 export type UserType = {
   name: string
   id: number
@@ -98,5 +101,44 @@ export const followingInProgressAC = (userId: number, inProgress: boolean) => ({
   type: 'FOLLOWING-IN-PROGRESS',
   payload: { userId: userId, inProgress: inProgress },
 } as const);
+
+export const getUsersTC = (currentPage: number, pageSize: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleIsFetchingAC(true));
+    usersAPI.getUsers(currentPage, pageSize)
+      .then((data) => {
+          dispatch(toggleIsFetchingAC(false));
+          dispatch(setUsersAC(data.items));
+          dispatch(setTotalUsersCountAC(data.totalCount));
+        },
+      );
+  };
+};
+export const followTC = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(followingInProgressAC(userId, true));
+    usersAPI.followPostRequest(userId)
+      .then((data) => {
+        console.log(data);
+        if (data.resultCode === 0) {
+          dispatch(followAC(userId));
+        }
+        dispatch(followingInProgressAC(userId, false));
+      });
+  };
+};
+export const unFollowTC = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(followingInProgressAC(userId, true));
+    usersAPI.unFollowDeleteRequest(userId)
+      .then((data) => {
+        console.log(data);
+        if (data.resultCode === 0) {
+          dispatch(unFollowAC(userId));
+        }
+        dispatch(followingInProgressAC(userId, false));
+      });
+  };
+};
 
 
