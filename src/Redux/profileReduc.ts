@@ -1,7 +1,6 @@
 import { ProfileType } from '../components/Profile/ProfileContainer';
-
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+import { Dispatch } from 'redux';
+import axios from 'axios';
 
 const initialState = {
   postsData: [
@@ -26,7 +25,7 @@ type actionType =
 
 export const profileReducer = (state: initialStateType = initialState, action: actionType): initialStateType => {
   switch (action.type) {
-    case ADD_POST:
+    case 'ADD-POST':
       return {
         ...state,
         postsData: [
@@ -35,7 +34,7 @@ export const profileReducer = (state: initialStateType = initialState, action: a
         ],
         newPostText: '',
       };
-    case UPDATE_NEW_POST_TEXT:
+    case 'UPDATE-NEW-POST-TEXT':
       return { ...state, newPostText: action.newText };
     case 'SET_USER_PROFILE':
       return { ...state, profile: action.payload };
@@ -49,7 +48,18 @@ type onPostChangeACType = ReturnType<typeof onPostChangeAC>
 
 type setUserProfileType = ReturnType<typeof setUserProfileAC>
 
-export const addPostAC = () => ({ type: ADD_POST } as const);
-export const onPostChangeAC = (text: string) => ({ type: UPDATE_NEW_POST_TEXT, newText: text } as const);
-
+export const addPostAC = () => ({ type: 'ADD-POST' } as const);
+export const onPostChangeAC = (text: string) => ({ type: 'UPDATE-NEW-POST-TEXT', newText: text } as const);
 export const setUserProfileAC = (profile: ProfileType) => ({ type: 'SET_USER_PROFILE', payload: profile } as const);
+
+export const setUserProfileTC = (userId: string) => {
+  return (dispatch: Dispatch) => {
+    if (!userId) {userId = '2';}
+    axios
+      .get(
+        `https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
+      .then((response) => {
+        dispatch(setUserProfileAC(response.data));
+      });
+  }
+}
