@@ -2,7 +2,7 @@ import React from 'react';
 import { Profile } from './Profile';
 import { connect } from 'react-redux';
 import { setUserProfileTC } from '../../Redux/profileReduc';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
 
 export type ProfileType = {
@@ -29,6 +29,7 @@ export type ProfileType = {
 
 type mapStateToPropsType = {
   profile: ProfileType | null
+  isAuth: boolean
 }
 
 type mapDispatchPropsType = {
@@ -51,6 +52,9 @@ export class ProfileAPIComponent extends React.Component<PropsType, ProfileFromR
   }
 
   render() {
+
+    if (!this.props.isAuth) return <Redirect to={'/login'}/>
+
     return (
       <Profile
         {...this.props}
@@ -61,6 +65,7 @@ export class ProfileAPIComponent extends React.Component<PropsType, ProfileFromR
 
 const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
   profile: state.profile.profile,
+  isAuth: state.auth.isAuth
 });
 
 const WithUrlContainerComponent = withRouter(ProfileAPIComponent);

@@ -1,10 +1,13 @@
 import React from 'react';
 import style from './ProfileInfo.module.css';
 import { Preloader } from '../../common/Preloader/Preloader';
-import { ProfilePropsTpe } from '../Profile';
+import { ProfileType } from '../ProfileContainer';
 
-export const ProfileInfo: React.FC<ProfilePropsTpe> = (props) => {
+export type ProfileInfoPropsTpe = {
+  profile: ProfileType | null
+}
 
+export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
   if (!props.profile) {
     return <Preloader />;
   }

@@ -4,14 +4,19 @@ import { MessageItem } from './Massage/Message';
 import { DialogItem } from './DialogItem/Dialog';
 import { DialogItemPropsType, MessageItemPropsType, MessageStateType } from '../../Redux/store';
 import { AddMessage } from './AddMassage';
+import { Redirect } from 'react-router-dom';
 
 type DialogsPropsType = {
   dialogs: MessageStateType
   addMessage: () => void
   onMessageChange: (newText: string) => void
+  isAuth: boolean
 }
 
 export const Dialogs: React.FC<DialogsPropsType> = (props) => {
+
+  if (!props.isAuth) return <Redirect to={'/login'}/>
+
   return (
     <div className={style.dialogs}>
       <div className={style.dialogsItems}>

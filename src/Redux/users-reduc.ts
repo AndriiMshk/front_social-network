@@ -119,7 +119,6 @@ export const followTC = (userId: number) => {
     dispatch(followingInProgressAC(userId, true));
     usersAPI.followPostRequest(userId)
       .then((data) => {
-        console.log(data);
         if (data.resultCode === 0) {
           dispatch(followAC(userId));
         }

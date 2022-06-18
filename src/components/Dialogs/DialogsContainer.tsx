@@ -1,13 +1,14 @@
 import React from 'react';
-import { stateType } from '../../Redux/store';
 import { Dialogs } from './Dialogs';
 import { addMessageAC, onMessageChangeAC } from '../../Redux/messageReduc';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { StateTypeFromRedux } from '../../Redux/redux-store';
 
-const mapStateToProps = (state: stateType) => {
+const mapStateToProps = (state: StateTypeFromRedux) => {
   return {
     dialogs: state.dialogs,
+    isAuth: state.auth.isAuth
   };
 };
 
