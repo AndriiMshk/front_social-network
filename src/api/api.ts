@@ -29,6 +29,9 @@ export const usersAPI = {
         .then((response) => response.data)
     );
   },
+};
+
+export const authAPI = {
   authGetRequest() {
     return (
       instance
@@ -36,5 +39,5 @@ export const usersAPI = {
         .then((response) => response.data)
     );
   },
-};
+}
 

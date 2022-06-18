@@ -1,4 +1,4 @@
-import { usersAPI } from '../api/api';
+import { authAPI } from '../api/api';
 import { Dispatch } from 'redux';
 
 interface initialStateType {
@@ -35,7 +35,7 @@ export const setUserAuthDataAC = (userId: number, email: string, login: string) 
 
 export const authMeTC = () => {
   return (dispatch: Dispatch) => {
-    usersAPI.authGetRequest()
+    authAPI.authGetRequest()
       .then((data) => {
         if (data.resultCode === 0) {
           const { id, login, email } = data.data;
