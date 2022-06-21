@@ -5,6 +5,7 @@ import { setUserProfileTC } from '../../Redux/profileReduc';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
 import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
+import { compose } from 'redux';
 
 export type ProfileType = {
   aboutMe: string
@@ -65,11 +66,13 @@ const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
   profile: state.profile.profile,
 });
 
-const WithUrlContainerComponent = withRouter(ProfileContainer);
+export default compose<React.ComponentType>(
+  connect(mapStateToProps, { setUserProfile: setUserProfileTC }),
+  withRouter,
+  withAuthRedirectHOC,
+)(ProfileContainer);
 
-export default withAuthRedirectHOC(connect(mapStateToProps, {
-  setUserProfile: setUserProfileTC,
-})(WithUrlContainerComponent));
+
 
 
 
