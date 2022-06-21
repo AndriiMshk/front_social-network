@@ -69,7 +69,6 @@ const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
 export default compose<React.ComponentType>(
   connect(mapStateToProps, { setUserProfile: setUserProfileTC }),
   withRouter,
-  withAuthRedirectHOC,
 )(ProfileContainer);
 
 
