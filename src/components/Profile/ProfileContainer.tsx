@@ -2,8 +2,9 @@ import React from 'react';
 import { Profile } from './Profile';
 import { connect } from 'react-redux';
 import { setUserProfileTC } from '../../Redux/profileReduc';
-import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
+import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 
 export type ProfileType = {
   aboutMe: string
@@ -29,7 +30,6 @@ export type ProfileType = {
 
 type mapStateToPropsType = {
   profile: ProfileType | null
-  isAuth: boolean
 }
 
 type mapDispatchPropsType = {
@@ -41,10 +41,10 @@ type PathParamsType = {
 }
 
 // Type for withRouter
-type ProfileAPIComponentPropsType = mapStateToPropsType & mapDispatchPropsType
-type PropsType = RouteComponentProps<PathParamsType> & ProfileAPIComponentPropsType
+type ProfileContainerPropsType = mapStateToPropsType & mapDispatchPropsType
+type PropsType = RouteComponentProps<PathParamsType> & ProfileContainerPropsType
 
-export class ProfileAPIComponent extends React.Component<PropsType, ProfileFromReduxType> {
+class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> {
 
   componentDidMount(): void {
     let userId = this.props.match.params.userId;
@@ -52,8 +52,6 @@ export class ProfileAPIComponent extends React.Component<PropsType, ProfileFromR
   }
 
   render() {
-
-    if (!this.props.isAuth) return <Redirect to={'/login'}/>
 
     return (
       <Profile
@@ -65,11 +63,13 @@ export class ProfileAPIComponent extends React.Component<PropsType, ProfileFromR
 
 const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
   profile: state.profile.profile,
-  isAuth: state.auth.isAuth
 });
 
-const WithUrlContainerComponent = withRouter(ProfileAPIComponent);
+const WithUrlContainerComponent = withRouter(ProfileContainer);
 
-export const ProfileContainer = connect(mapStateToProps, {
+export default withAuthRedirectHOC(connect(mapStateToProps, {
   setUserProfile: setUserProfileTC,
-})(WithUrlContainerComponent);
+})(WithUrlContainerComponent));
+
+
+

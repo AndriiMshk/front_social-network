@@ -4,6 +4,7 @@ import { followTC, getUsersTC, setCurrentPageAC, unFollowTC, UserType } from '..
 import { StateTypeFromRedux } from '../../Redux/redux-store';
 import { Users } from './Users';
 import { Preloader } from '../common/Preloader/Preloader';
+import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 
 type UsersPropsType = {
   users: UserType[]
@@ -18,7 +19,7 @@ type UsersPropsType = {
   follow: (usedId: number) => void
 }
 
-class UsersAPIComponent extends React.Component<UsersPropsType, UserType[]> {
+class UsersContainer extends React.Component<UsersPropsType, UserType[]> {
   componentDidMount(): void {
     this.props.getUsers(this.props.currentPage, this.props.pageSize);
   }
@@ -69,11 +70,11 @@ const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => (
   }
 );
 
-export const UsersContainer = connect(mapStateToProps,
+export default withAuthRedirectHOC(connect(mapStateToProps,
   {
     setCurrentPage: setCurrentPageAC,
     getUsers: getUsersTC,
     follow: followTC,
     unFollow: unFollowTC,
   },
-)(UsersAPIComponent);
+)(UsersContainer));

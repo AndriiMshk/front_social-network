@@ -2,7 +2,7 @@ import React from 'react';
 import { Header } from './Header';
 import { connect } from 'react-redux';
 import { authMeTC } from '../../Redux/auth-reducer';
-import { StateTypeFromRedux, UserAuthTypeFromRedux } from '../../Redux/redux-store';
+import { StateTypeFromRedux, UserFromReduxAuthType } from '../../Redux/redux-store';
 
 type HeaderPropsType = {
   isAuth: boolean
@@ -10,7 +10,7 @@ type HeaderPropsType = {
   authMe: () => void
 }
 
-export class HeaderApiContainer extends React.Component<HeaderPropsType, UserAuthTypeFromRedux> {
+export class HeaderApiContainer extends React.Component<HeaderPropsType, UserFromReduxAuthType> {
 
   componentDidMount(): void {
     this.props.authMe();

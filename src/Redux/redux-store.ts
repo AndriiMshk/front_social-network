@@ -22,8 +22,9 @@ export type StateTypeFromRedux = ReturnType<typeof rootReducer> // ROOT STATE TY
 
 export const stateFromRedux = store.getState();
 
-export type UserAuthTypeFromRedux = typeof stateFromRedux.auth
+export type UserFromReduxAuthType= typeof stateFromRedux.auth
 export type ProfileFromReduxType = typeof stateFromRedux.profile
+export  type DialogsFromReduxType = typeof stateFromRedux.dialogs
 
 //@ts-ignore
 window.store = store;
