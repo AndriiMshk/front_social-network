@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
 import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 import { compose } from 'redux';
+import { log } from 'util';
 
 export type ProfileType = {
   aboutMe: string
@@ -52,9 +53,18 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
 
   componentDidMount(): void {
     let userId = this.props.match.params.userId;
-    if (!userId) {userId = '2';}
+    if (!userId) {userId = '24033';}
     this.props.getUserStatus(userId);
     this.props.setUserProfile(userId);
+  }
+
+  componentDidUpdate(
+    prevProps: Readonly<PropsType>,
+    prevState: Readonly<ProfileFromReduxType>, snapshot?: any
+  ): void {
+    if (prevProps.status !== this.props.status) {
+      this.setState({status: this.props.status})
+    }
   }
 
   render() {

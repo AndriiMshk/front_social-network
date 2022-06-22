@@ -86,7 +86,6 @@ export const updateStatusTC = (status: string) => {
   return (dispatch: Dispatch) => {
     profileAPI.updateStatus(status)
       .then((res) => {
-        console.log(res);
         if (res.data.resultCode === 0)
         dispatch(setStatusAC(status));
       });
