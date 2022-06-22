@@ -6,23 +6,30 @@ import { ProfileStatus } from './ProfileStatus';
 
 export type ProfileInfoPropsTpe = {
   profile: ProfileType | null
+  status: string
+  updateUserStatus: (status: string) => void
 }
 
-export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = ({profile}) => {
-  if (!profile) {
+export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
+  if (!props.profile) {
     return <Preloader />;
   }
   return (
     <div>
+
+      <span>status: {props.status}</span>
       <div className={style.descriptionBlock}>
-        <img src={profile.photos.small} alt="" />
-        <ProfileStatus status={'11111'}/>
+        <img src={props.profile.photos.small} alt="" />
+        <ProfileStatus
+          status={props.status}
+          updateUserStatus={props.updateUserStatus}
+        />
         <hr />
-        <span>{profile.fullName}</span>
-        <p>{profile.aboutMe}</p>
-        <span>facebook: {profile.contacts.facebook}</span>
+        <span>{props.profile.fullName}</span>
+        <p>{props.profile.aboutMe}</p>
+        <span>facebook: {props.profile.contacts.facebook}</span>
         <hr />
-        <span>github: {profile.contacts.github}</span>
+        <span>github: {props.profile.contacts.github}</span>
       </div>
     </div>
   );

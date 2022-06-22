@@ -131,7 +131,6 @@ export const unFollowTC = (userId: number) => {
     dispatch(followingInProgressAC(userId, true));
     usersAPI.unFollowDeleteRequest(userId)
       .then((data) => {
-        console.log(data);
         if (data.resultCode === 0) {
           dispatch(unFollowAC(userId));
         }
