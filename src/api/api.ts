@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { FormDataType } from '../components/Login/Login';
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
@@ -39,6 +40,11 @@ export const authAPI = {
         .then((response) => response.data)
     );
   },
+  loginRequest(formData: FormDataType) {
+    return (
+      instance.post(`/auth/login`, formData)
+    )
+  }
 };
 
 export const profileAPI = {

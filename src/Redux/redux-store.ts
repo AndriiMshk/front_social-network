@@ -5,6 +5,7 @@ import { messageReducer } from './messageReduc';
 import { usersReducer } from './users-reduc';
 import { authReducer } from './auth-reducer';
 import thunkMiddleware from 'redux-thunk'
+import {reducer as formReducer} from 'redux-form';
 
 const rootReducer = combineReducers(
   {
@@ -13,6 +14,7 @@ const rootReducer = combineReducers(
     dialogs: messageReducer,
     usersPage: usersReducer,
     auth: authReducer,
+    form: formReducer
   },
 );
 

@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import { setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profileReduc';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
-import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 import { compose } from 'redux';
-import { log } from 'util';
 
 export type ProfileType = {
   aboutMe: string

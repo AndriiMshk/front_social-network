@@ -42,12 +42,6 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType, State
   render(): React.ReactNode {
     return (
       <div>
-        <button
-          onClick={() => {
-            this.props.updateUserStatus('q');
-          }}
-        >q
-        </button>
         {!this.state.editMode
           ?
           <div>
