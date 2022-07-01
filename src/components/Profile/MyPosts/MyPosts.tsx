@@ -2,47 +2,23 @@ import React from 'react';
 import style from './MyPosts.module.css';
 import { Post } from './MyPost/Post.';
 import { PostPropsType } from '../../../Redux/store';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 
 type MyPostsPropsType = {
   posts: PostPropsType[]
-  newPostText: string
-  addPost: () => void
-  onPostChange: (text: string) => void
+  addPost: (post: string) => void
 }
 
 export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
 
-  let postElement = React.createRef<HTMLTextAreaElement>();
-
-  const onPostChangeHandler = () => {
-    let text = postElement.current?.value;
-    if (text) {
-      props.onPostChange(text);
-    }
-  };
-
-  const addPostHandler = () => {
-    props.addPost();
+  const onSubmit = (formData: FormDataType) => {
+    props.addPost(formData.post);
   };
 
   return (
     <div className={style.postsBlock}>
       <h3>My posts</h3>
-      <div>
-        <div>
-          <textarea
-            ref={postElement}
-            value={props.newPostText}
-            onChange={onPostChangeHandler}
-          />
-        </div>
-        <div>
-          <button
-            onClick={addPostHandler}
-          >add post
-          </button>
-        </div>
-      </div>
+      <PosyReduxForm onSubmit={onSubmit} />
       <div className={style.posts}>
         {props.posts.map((p: PostPropsType) => (
           <Post
@@ -55,3 +31,21 @@ export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
     </div>
   );
 };
+
+type FormDataType = {
+  post: string
+}
+
+const PosyForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <div>
+        <Field placeholder="New Post" name={'post'} component={'textarea'} />
+      </div>
+      <div>
+        <button>add post</button>
+      </div>
+    </form>
+  );
+};
+const PosyReduxForm = reduxForm<FormDataType>({ form: 'post' })(PosyForm);

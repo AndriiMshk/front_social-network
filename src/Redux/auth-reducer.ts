@@ -1,5 +1,6 @@
 import { authAPI } from '../api/api';
 import { Dispatch } from 'redux';
+import { FormDataType } from '../components/Login/Login';
 
 interface initialStateType {
   userId: number | null
@@ -44,3 +45,8 @@ export const authMeTC = () => {
       });
   };
 };
+
+export const loginTC = (formData: FormDataType) => ((dispatch: Dispatch) => {
+  authAPI.loginRequest(formData)
+    .then((res) => console.log(res));
+});

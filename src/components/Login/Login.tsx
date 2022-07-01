@@ -2,12 +2,6 @@ import React from 'react';
 import { reduxForm, InjectedFormProps, Field } from 'redux-form';
 import { authAPI } from '../../api/api';
 
-type FormDataType2 = {
-  login: string
-  password: string
-  rememberMe: boolean
-}
-
 export type FormDataType = {
   email: string
   password: string
@@ -38,10 +32,9 @@ const LoginReduxForm = reduxForm<FormDataType>({ form: 'login' })(LoginForm);
 
 const Login = () => {
   const onSubmit = (formData: FormDataType) => {
-    authAPI.loginRequest(formData).then((res)=>{
-      console.log(res);
-    })
-  };
+    authAPI.loginRequest(formData)
+      .then((res) => console.log(res));
+    }
   // вынести запрос в санку
   return (
     <div>

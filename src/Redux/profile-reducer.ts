@@ -8,24 +8,20 @@ const initialState = {
     { id: 2, message: 'hello', likeCounts: 0 },
     { id: 3, message: 'hello', likeCounts: 0 },
   ],
-  newPostText: '',
   profile: null,
   status: '',
 };
 
 type initialStateType = {
   postsData: { id: number, message: string, likeCounts: number }[]
-  newPostText: string
   profile: ProfileType | null
   status: string
 }
 
 type actionType =
   addPostACType
-  | onPostChangeACType
   | setUserProfileType
   | setStatusACType
-  // | updateStatusACType
 
 export const profileReducer = (state: initialStateType = initialState, action: actionType): initialStateType => {
   switch (action.type) {
@@ -34,12 +30,9 @@ export const profileReducer = (state: initialStateType = initialState, action: a
         ...state,
         postsData: [
           ...state.postsData,
-          { id: state.postsData.length + 1, message: state.newPostText, likeCounts: 0 },
-        ],
-        newPostText: '',
+          { id: state.postsData.length + 1, message: action.post, likeCounts: 0 },
+        ]
       };
-    case 'UPDATE-NEW-POST-TEXT':
-      return { ...state, newPostText: action.newText };
     case 'SET_USER_PROFILE':
       return { ...state, profile: action.payload };
     case 'SET-STATUS':
@@ -50,25 +43,18 @@ export const profileReducer = (state: initialStateType = initialState, action: a
 };
 
 type addPostACType = ReturnType<typeof addPostAC>
-type onPostChangeACType = ReturnType<typeof onPostChangeAC>
-
 type setUserProfileType = ReturnType<typeof setUserProfileAC>
-
 type setStatusACType = ReturnType<typeof setStatusAC>
-// type updateStatusACType = ReturnType<typeof updateStatusAC>
 
-export const addPostAC = () => ({ type: 'ADD-POST' } as const);
-export const onPostChangeAC = (text: string) => ({ type: 'UPDATE-NEW-POST-TEXT', newText: text } as const);
+export const addPostAC = (post: string) => ({ type: 'ADD-POST', post } as const);
 export const setUserProfileAC = (profile: ProfileType) => ({ type: 'SET_USER_PROFILE', payload: profile } as const);
 export const setStatusAC = (status: string) => ({ type: 'SET-STATUS', status: status } as const);
-// export const updateStatusAC = (status: string) => ({ type: 'UPDATE-STATUS', status: status } as const);
 
 export const setUserProfileTC = (userId: number) => {
   return (dispatch: Dispatch) => {
     profileAPI.getProfile(userId)
       .then((response) => {
         dispatch(setUserProfileAC(response.data));
-        // console.log(response.data);
       });
   };
 };

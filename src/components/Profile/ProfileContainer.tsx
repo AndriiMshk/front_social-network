@@ -1,7 +1,7 @@
 import React from 'react';
 import { Profile } from './Profile';
 import { connect } from 'react-redux';
-import { setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profileReduc';
+import { setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profile-reducer';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
 import { compose } from 'redux';

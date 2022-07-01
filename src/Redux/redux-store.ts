@@ -1,6 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { sidebarReducer } from './sidebarReduc';
-import { profileReducer } from './profileReduc';
+import { profileReducer } from './profile-reducer';
 import { messageReducer } from './messageReduc';
 import { usersReducer } from './users-reduc';
 import { authReducer } from './auth-reducer';

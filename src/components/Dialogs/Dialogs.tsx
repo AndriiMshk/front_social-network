@@ -7,8 +7,7 @@ import { AddMessage } from './AddMassage';
 
 export type DialogsPropsType = {
   dialogs: MessageStateType
-  addMessage: () => void
-  onMessageChange: (newText: string) => void
+  addMessage: (message: string) => void
 }
 
 export const Dialogs: React.FC<DialogsPropsType> = (props) => {
@@ -34,9 +33,7 @@ export const Dialogs: React.FC<DialogsPropsType> = (props) => {
           />),
         )}
         <AddMessage
-          newMessage={props.dialogs.newMessageBody}
           addMessage={props.addMessage}
-          onMessageChange={props.onMessageChange}
         />
       </div>
 

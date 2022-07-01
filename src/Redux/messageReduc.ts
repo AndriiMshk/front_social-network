@@ -1,7 +1,11 @@
-import { MessageStateType } from './store';
+import { DialogItemPropsType, MessageItemPropsType } from './store';
 
 const ADD_MESSAGE = 'ADD-MESSAGE';
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
+
+export type MessageStateType = {
+  messagesData: MessageItemPropsType[]
+  dialogsData: DialogItemPropsType[]
+}
 
 const initialState: MessageStateType = {
   messagesData: [
@@ -10,7 +14,6 @@ const initialState: MessageStateType = {
     { id: 3, message: 'message3' },
     { id: 4, message: 'message4' },
   ],
-  newMessageBody: '',
   dialogsData: [
     { id: 1, name: 'name1' },
     { id: 2, name: 'name2' },
@@ -19,7 +22,7 @@ const initialState: MessageStateType = {
   ],
 };
 
-type ActionType = addMessageACType | onMessageChangeACType
+type ActionType = addMessageACType
 
 export const messageReducer = (state: MessageStateType = initialState, action: ActionType): MessageStateType => {
   switch (action.type) {
@@ -30,20 +33,15 @@ export const messageReducer = (state: MessageStateType = initialState, action: A
           ...state.messagesData,
           {
             id: state.messagesData.length + 1,
-            message: state.newMessageBody,
+            message: action.message,
           },
         ],
-        newMessageBody: '',
       };
-    case UPDATE_NEW_MESSAGE_TEXT:
-      return { ...state, newMessageBody: action.newText };
     default:
       return state;
   }
 };
 
 type addMessageACType = ReturnType<typeof addMessageAC>
-type onMessageChangeACType = ReturnType<typeof onMessageChangeAC>
 
-export const addMessageAC = () => ({ type: ADD_MESSAGE } as const);
-export const onMessageChangeAC = (text: string) => ({ type: UPDATE_NEW_MESSAGE_TEXT, newText: text } as const);
+export const addMessageAC = (message: string) => ({ type: ADD_MESSAGE, message } as const);

@@ -17,7 +17,6 @@ export type MessageItemPropsType = {
 }
 export type MessageStateType = {
   messagesData: MessageItemPropsType[]
-  newMessageBody: string
   dialogsData: DialogItemPropsType[]
 }
 export type friendsType = {
@@ -82,7 +81,6 @@ export const store: storeType = {
         { id: 3, message: 'message3' },
         { id: 4, message: 'message4' },
       ],
-      newMessageBody: '',
       dialogsData: [
         { id: 1, name: 'name1' },
         { id: 2, name: 'name2' },
