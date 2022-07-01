@@ -3,11 +3,18 @@ import style from './MyPosts.module.css';
 import { Post } from './MyPost/Post.';
 import { PostPropsType } from '../../../Redux/store';
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
+import { maxLength, requiredField } from '../../../helpers/validators/validators';
+import { Textarea } from '../../common/FormControls/FormControls';
+// import { Textarea } from '../../common/FormControls/FormControls';
+
+
 
 type MyPostsPropsType = {
   posts: PostPropsType[]
   addPost: (post: string) => void
 }
+
+const maxLength10 = maxLength(10); // выносить креатор за пределы компонента
 
 export const MyPosts: React.FC<MyPostsPropsType> = (props) => {
 
@@ -40,7 +47,12 @@ const PosyForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
-        <Field placeholder="New Post" name={'post'} component={'textarea'} />
+        <Field
+          placeholder="New Post"
+          name={'post'}
+          component={Textarea}
+          validate={[requiredField, maxLength10]}
+        />
       </div>
       <div>
         <button>add post</button>
