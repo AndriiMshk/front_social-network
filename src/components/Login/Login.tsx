@@ -1,8 +1,8 @@
 import React from 'react';
-import { reduxForm, InjectedFormProps, Field } from 'redux-form';
-import { authAPI } from '../../api/api';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { Input } from '../common/FormControls/FormControls';
 import { requiredField } from '../../helpers/validators/validators';
+import { Redirect } from 'react-router-dom';
 
 export type FormDataType = {
   email: string
@@ -26,12 +26,13 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
         <Field
           placeholder="password"
           name={'password'}
+          type={'password'}
           component={Input}
           validate={[requiredField]}
         />
       </div>
       <div>
-        <Field type="checkbox" name={'rememberMe'} component={'input'}/> remember me
+        <Field type="checkbox" name={'rememberMe'} component={'input'} /> remember me
       </div>
       <div>
         <button>sign in</button>
@@ -42,12 +43,21 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
 
 const LoginReduxForm = reduxForm<FormDataType>({ form: 'login' })(LoginForm);
 
-const Login = () => {
+export type LoginPropsType = {
+  login: (email: string, password: string, rememberMe: boolean) => void
+  isAuth: boolean
+}
+
+export const Login: React.FC<LoginPropsType> = (props) => {
+
   const onSubmit = (formData: FormDataType) => {
-    authAPI.loginRequest(formData)
-      .then((res) => console.log(res));
-    }
-  // вынести запрос в санку
+    props.login(formData.email, formData.password, formData.rememberMe);
+  };
+
+  if (props.isAuth) {
+    return <Redirect to={'/profile'}/>
+  }
+
   return (
     <div>
       <h1>LOGIN</h1>
@@ -55,6 +65,5 @@ const Login = () => {
     </div>
   );
 };
-export default Login
 
 // типизация формы тоже полная жома

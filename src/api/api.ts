@@ -40,11 +40,14 @@ export const authAPI = {
         .then((response) => response.data)
     );
   },
-  loginRequest(formData: FormDataType) {
+  loginRequest(email: string, password: string, rememberMe: boolean = false) {
     return (
-      instance.post(`/auth/login`, formData)
-    )
-  }
+      instance.post(`/auth/login`, { email, password, rememberMe })
+    );
+  },
+  logoutRequest() {
+    return instance.delete(`/auth/login`);
+  },
 };
 
 export const profileAPI = {

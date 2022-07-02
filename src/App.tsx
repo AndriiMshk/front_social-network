@@ -6,10 +6,10 @@ import { Music } from './components/Music/Music';
 import { Settings } from './components/Settings/Settings';
 import { Route } from 'react-router-dom';
 import UsersContainer from './components/Users/UsersContainer';
-import Login from './components/Login/Login';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import { HeaderContainer } from './components/Header/HeaderContainer';
+import LoginContainer from './components/Login/LoginContainer';
 
 const App: React.FC = () => {
   return (
@@ -23,10 +23,16 @@ const App: React.FC = () => {
         <Route path={'/news'} component={News} />
         <Route path={'/music'} component={Music} />
         <Route path={'/settings'} component={Settings} />
-        <Route path={'/login'} component={Login} />
+        <Route path={'/login'} component={LoginContainer} />
       </div>
     </div>
   );
 };
 
 export default App;
+
+
+/*
+  (dispatch: ThunkDispatch<StateTypeFromRedux, unknown, AnyAction>) => {
+    //типизацию спиздил из тудулиста и не понятно что она сука делает
+ */

@@ -38,7 +38,6 @@ export const AddMessage: React.FC<AddMessagePropsType> = (props) => {
 
   return (
     <div>
-      <h1>LOGIN</h1>
       <AddMessageReduxForm onSubmit={onSubmit} />
     </div>
   );

@@ -1,11 +1,12 @@
 import { authAPI } from '../api/api';
-import { Dispatch } from 'redux';
-import { FormDataType } from '../components/Login/Login';
+import { AnyAction, Dispatch } from 'redux';
+import { StateTypeFromRedux } from './redux-store';
+import { ThunkDispatch } from 'redux-thunk';
 
 interface initialStateType {
   userId: number | null
-  email: string,
-  login: string,
+  email: string | null
+  login: string  | null
   isAuth: boolean,
   isFetching: boolean,
 }
@@ -18,12 +19,12 @@ const initialState = {
   isFetching: false,
 };
 
-type ActionType = setUserAuthDataACType
+export type ActionType = setUserAuthDataACType
 
 export const authReducer = (state: initialStateType = initialState, action: ActionType): initialStateType => {
   switch (action.type) {
     case 'SET-USER-DATA':
-      return { ...state, ...action.payload, isAuth: true };
+      return { ...state, ...action.payload };
     default:
       return state;
   }
@@ -31,8 +32,8 @@ export const authReducer = (state: initialStateType = initialState, action: Acti
 
 type setUserAuthDataACType = ReturnType<typeof setUserAuthDataAC>
 
-export const setUserAuthDataAC = (userId: number, email: string, login: string) => (
-  { type: 'SET-USER-DATA', payload: { userId, email, login } } as const);
+export const setUserAuthDataAC = (userId: number | null, email: string | null, login: string | null, isAuth: boolean) => (
+  { type: 'SET-USER-DATA', payload: { userId, email, login, isAuth } } as const);
 
 export const authMeTC = () => {
   return (dispatch: Dispatch) => {
@@ -40,13 +41,30 @@ export const authMeTC = () => {
       .then((data) => {
         if (data.resultCode === 0) {
           const { id, login, email } = data.data;
-          dispatch(setUserAuthDataAC(id, email, login));
+          dispatch(setUserAuthDataAC(id, email, login, true));
         }
       });
   };
 };
 
-export const loginTC = (formData: FormDataType) => ((dispatch: Dispatch) => {
-  authAPI.loginRequest(formData)
-    .then((res) => console.log(res));
-});
+export const loginTC = (email: string, password: string, rememberMe: boolean = false) => (
+  (dispatch: ThunkDispatch<StateTypeFromRedux, unknown, AnyAction>) => {
+    //типизацию спиздил из тудулиста и не понятно что она сука делает
+    authAPI.loginRequest(email, password, rememberMe)
+      .then((res) => {
+        if (res.data.resultCode === 0) {
+          dispatch(authMeTC());
+        }
+      });
+  });
+
+
+export const logoutTC = () => (
+  (dispatch: Dispatch) => {
+    authAPI.logoutRequest()
+      .then(res=> {
+        if (res.data.resultCode === 0) {
+          dispatch(setUserAuthDataAC(null, null, null, false));
+        }
+      });
+  });

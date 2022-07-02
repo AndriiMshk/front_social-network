@@ -30,7 +30,7 @@ const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => {
 
 const mapDispatchToProps = (dispatch: Dispatch): maDispatchToPropsType => {
   return {
-    addMessage: (message: string) => {dispatch(addMessageAC(message));},
+    addMessage: (message: string) => dispatch(addMessageAC(message))
   };
 };
 

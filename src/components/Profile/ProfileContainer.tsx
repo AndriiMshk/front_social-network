@@ -5,6 +5,7 @@ import { setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profi
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
 import { compose } from 'redux';
+import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 
 export type ProfileType = {
   aboutMe: string
@@ -90,7 +91,7 @@ export default compose<React.ComponentType>(
       updateUserStatus: updateStatusTC,
     },
   ),
-  // withAuthRedirectHOC,
+  withAuthRedirectHOC,
   withRouter,
 )(ProfileContainer);
 
