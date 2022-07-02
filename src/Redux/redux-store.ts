@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import { sidebarReducer } from './sidebarReduc';
+import { sidebarReducer } from './sidebar-reducer';
 import { profileReducer } from './profile-reducer';
-import { messageReducer } from './messageReduc';
+import { messageReducer } from './message-reducer';
 import { usersReducer } from './users-reduc';
 import { authReducer } from './auth-reducer';
 import thunkMiddleware from 'redux-thunk'

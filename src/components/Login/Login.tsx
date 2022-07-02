@@ -3,6 +3,7 @@ import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { Input } from '../common/FormControls/FormControls';
 import { requiredField } from '../../helpers/validators/validators';
 import { Redirect } from 'react-router-dom';
+import styles from '../common/FormControls/FormsControl.module.css';
 
 export type FormDataType = {
   email: string
@@ -34,6 +35,10 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
       <div>
         <Field type="checkbox" name={'rememberMe'} component={'input'} /> remember me
       </div>
+      {props.error &&
+      <div className={styles.formCommonError}>
+        {props.error}
+      </div>}
       <div>
         <button>sign in</button>
       </div>
@@ -55,7 +60,7 @@ export const Login: React.FC<LoginPropsType> = (props) => {
   };
 
   if (props.isAuth) {
-    return <Redirect to={'/profile'}/>
+    return <Redirect to={'/profile'} />;
   }
 
   return (
