@@ -28,7 +28,6 @@ export function withAuthRedirectHOC<Type>(Component: React.ComponentType<Type>) 
   return connect(mapStateToProps)(RedirectComponent);
 }
 
-//очень странно сложная типизация ХОКа
 
 
 

@@ -3,6 +3,8 @@ import React from 'react';
 
 export const Preloader = () => {
   return (
-    <img src={loadingImg} alt="loading"/>
-  )
-}
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <img src={loadingImg} alt="loading" style={{ display: 'block', width: '100%', height: '100%' }} />
+    </div>
+  );
+};

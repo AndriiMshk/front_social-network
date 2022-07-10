@@ -7,7 +7,7 @@ import { stopSubmit } from 'redux-form';
 interface initialStateType {
   userId: number | null
   email: string | null
-  login: string  | null
+  login: string | null
   isAuth: boolean,
   isFetching: boolean,
 }
@@ -33,12 +33,13 @@ export const authReducer = (state: initialStateType = initialState, action: Acti
 
 type setUserAuthDataACType = ReturnType<typeof setUserAuthDataAC>
 
-export const setUserAuthDataAC = (userId: number | null, email: string | null, login: string | null, isAuth: boolean) => (
+export const setUserAuthDataAC = (
+  userId: number | null, email: string | null, login: string | null, isAuth: boolean) => (
   { type: 'SET-USER-DATA', payload: { userId, email, login, isAuth } } as const);
 
 export const authMeTC = () => {
   return (dispatch: Dispatch) => {
-    authAPI.authGetRequest()
+    return authAPI.authGetRequest()
       .then((data) => {
         if (data.resultCode === 0) {
           const { id, login, email } = data.data;
@@ -56,8 +57,8 @@ export const loginTC = (email: string, password: string, rememberMe: boolean = f
         if (res.data.resultCode === 0) {
           dispatch(authMeTC());
         } else {
-          const errorMessage = res.data.messages.length ? res.data.messages[0] : "some error"
-          dispatch(stopSubmit('login', {_error: errorMessage}))
+          const errorMessage = res.data.messages.length ? res.data.messages[0] : 'some error';
+          dispatch(stopSubmit('login', { _error: errorMessage }));
         }
       });
   });
@@ -65,7 +66,7 @@ export const loginTC = (email: string, password: string, rememberMe: boolean = f
 export const logoutTC = () => (
   (dispatch: Dispatch) => {
     authAPI.logoutRequest()
-      .then(res=> {
+      .then(res => {
         if (res.data.resultCode === 0) {
           dispatch(setUserAuthDataAC(null, null, null, false));
         }

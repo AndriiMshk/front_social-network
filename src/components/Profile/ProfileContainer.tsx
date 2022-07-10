@@ -5,7 +5,6 @@ import { setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profi
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
 import { compose } from 'redux';
-import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 
 export type ProfileType = {
   aboutMe: string
@@ -55,12 +54,14 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
   componentDidMount(): void {
     let userId = this.props.match.params.userId;
     if (!userId) {
-      this.props.authorizedUserId
-        ? userId = this.props.authorizedUserId.toString()
-        : userId = '24033'; // заглушка
+      if (this.props.authorizedUserId) {
+        userId = this.props.authorizedUserId.toString();
+        this.props.getUserStatus(userId);
+        this.props.setUserProfile(userId);
+      } else {
+        this.props.history.push('/login');  // like Redirect
+      }
     }
-    this.props.getUserStatus(userId);
-    this.props.setUserProfile(userId);
   }
 
   componentDidUpdate(
@@ -99,7 +100,6 @@ export default compose<React.ComponentType>(
       updateUserStatus: updateStatusTC,
     },
   ),
-  withAuthRedirectHOC,
   withRouter,
 )(ProfileContainer);
 

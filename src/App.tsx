@@ -4,35 +4,60 @@ import { Navbar } from './components/Navbar/Navbar';
 import { News } from './components/News/News';
 import { Music } from './components/Music/Music';
 import { Settings } from './components/Settings/Settings';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import { HeaderContainer } from './components/Header/HeaderContainer';
 import LoginContainer from './components/Login/LoginContainer';
+import { StateTypeFromRedux, UserFromReduxAuthType } from './Redux/redux-store';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { setInitializeTC } from './Redux/app-reducer';
+import { Preloader } from './components/common/Preloader/Preloader';
 
-const App: React.FC = () => {
-  return (
-    <div className="app-wrapper">
-      <HeaderContainer />
-      <Navbar />
-      <div className="app-wrapper-content">
-        <Route path={'/profile/:userId?'} render={() => <ProfileContainer />} />
-        <Route path={'/dialogs'} render={() => <DialogsContainer />} />
-        <Route path={'/users'} render={() => <UsersContainer />} />
-        <Route path={'/news'} component={News} />
-        <Route path={'/music'} component={Music} />
-        <Route path={'/settings'} component={Settings} />
-        <Route path={'/login'} component={LoginContainer} />
+type AppPropsType = {
+  initialize: () => void
+  isInitialize: boolean
+}
+
+class AppContainer extends React.Component<AppPropsType, UserFromReduxAuthType> {
+
+  componentDidMount(): void {
+    this.props.initialize();
+  }
+
+  render() {
+    if (!this.props.isInitialize) return <Preloader/>
+
+    return (
+      <div className="app-wrapper">
+        <HeaderContainer />
+        <Navbar />
+        <div className="app-wrapper-content">
+          <Route path={'/profile/:userId?'} render={() => <ProfileContainer />} />
+          <Route path={'/dialogs'} render={() => <DialogsContainer />} />
+          <Route path={'/users'} render={() => <UsersContainer />} />
+          <Route path={'/news'} component={News} />
+          <Route path={'/music'} component={Music} />
+          <Route path={'/settings'} component={Settings} />
+          <Route path={'/login'} component={LoginContainer} />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-export default App;
+type mapStateToPropsType = {
+  isInitialize: boolean
+}
 
+const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
+  isInitialize: state.app.isInitialize,
+});
 
-/*
-  (dispatch: ThunkDispatch<StateTypeFromRedux, unknown, AnyAction>) => {
-    //типизацию спиздил из тудулиста и не понятно что она сука делает
- */
+export const App = compose<React.ComponentType>(
+  connect(mapStateToProps, {
+      initialize: setInitializeTC,
+    },
+  ), withRouter)(AppContainer);
