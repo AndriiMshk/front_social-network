@@ -6,6 +6,13 @@ import { Users } from './Users';
 import { Preloader } from '../common/Preloader/Preloader';
 import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 import { compose } from 'redux';
+import {
+  getCurrentPage,
+  getIsFetching, getIsFollowingIngProgress,
+  getPageSize,
+  getTotalUsersCount,
+  getUsersSelector,
+} from '../../Redux/selectors/user-selectors';
 
 type UsersPropsType = {
   users: UserType[]
@@ -51,6 +58,26 @@ class UsersContainer extends React.Component<UsersPropsType, UserType[]> {
   }
 }
 
+// type mapStateToPropsType = {
+//   users: UserType[]
+//   pageSize: number
+//   totalUsersCount: number
+//   currentPage: number
+//   isFetching: boolean
+//   isFollowingIngProgress: number[]
+// }
+//
+// const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => (
+//   {
+//     users: state.usersPage.users,
+//     pageSize: state.usersPage.pageSize,
+//     totalUsersCount: state.usersPage.totalUsersCount,
+//     currentPage: state.usersPage.currentPage,
+//     isFetching: state.usersPage.isFetching,
+//     isFollowingIngProgress: state.usersPage.followingInProgress,
+//   }
+// );
+
 type mapStateToPropsType = {
   users: UserType[]
   pageSize: number
@@ -62,12 +89,12 @@ type mapStateToPropsType = {
 
 const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => (
   {
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching,
-    isFollowingIngProgress: state.usersPage.followingInProgress,
+    users: getUsersSelector(state),
+    pageSize: getPageSize(state),
+    totalUsersCount: getTotalUsersCount(state),
+    currentPage: getCurrentPage(state),
+    isFetching: getIsFetching(state),
+    isFollowingIngProgress: getIsFollowingIngProgress(state),
   }
 );
 
