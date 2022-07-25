@@ -1,16 +1,8 @@
 import { authAPI } from '../api/api';
-import { AnyAction, Dispatch } from 'redux';
-import { StateTypeFromRedux } from './redux-store';
-import { ThunkDispatch } from 'redux-thunk';
+import { Dispatch } from 'redux';
+import { DispatchType } from './store';
 import { stopSubmit } from 'redux-form';
-
-interface initialStateType {
-  userId: number | null
-  email: string | null
-  login: string | null
-  isAuth: boolean,
-  isFetching: boolean,
-}
+import axios from 'axios';
 
 const initialState = {
   userId: null,
@@ -20,55 +12,71 @@ const initialState = {
   isFetching: false,
 };
 
-export type ActionType = setUserAuthDataACType
-
 export const authReducer = (state: initialStateType = initialState, action: ActionType): initialStateType => {
   switch (action.type) {
-    case 'SET-USER-DATA':
+    case 'auth/SET-USER-DATA':
       return { ...state, ...action.payload };
     default:
       return state;
   }
 };
 
-type setUserAuthDataACType = ReturnType<typeof setUserAuthDataAC>
-
 export const setUserAuthDataAC = (
   userId: number | null, email: string | null, login: string | null, isAuth: boolean) => (
-  { type: 'SET-USER-DATA', payload: { userId, email, login, isAuth } } as const);
+  { type: 'auth/SET-USER-DATA', payload: { userId, email, login, isAuth } } as const);
 
-export const authMeTC = () => {
-  return (dispatch: Dispatch) => {
-    return authAPI.authGetRequest()
-      .then((data) => {
-        if (data.resultCode === 0) {
-          const { id, login, email } = data.data;
-          dispatch(setUserAuthDataAC(id, email, login, true));
-        }
-      });
-  };
+export const authMeTC = () => async(dispatch: Dispatch) => {
+  try {
+    const data = await authAPI.authGetRequest();
+    if (data.resultCode === 0) {
+      const { id, login, email } = data.data;
+      dispatch(setUserAuthDataAC(id, email, login, true));
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.warn(error.message);
+    }
+  }
 };
 
-export const loginTC = (email: string, password: string, rememberMe: boolean = false) => (
-  (dispatch: ThunkDispatch<StateTypeFromRedux, unknown, AnyAction>) => {
-    //типизацию спиздил из тудулиста и не понятно что она сука делает
-    authAPI.loginRequest(email, password, rememberMe)
-      .then((res) => {
-        if (res.data.resultCode === 0) {
-          dispatch(authMeTC());
-        } else {
-          const errorMessage = res.data.messages.length ? res.data.messages[0] : 'some error';
-          dispatch(stopSubmit('login', { _error: errorMessage }));
-        }
-      });
-  });
+export const loginTC = (email: string, password: string, rememberMe: boolean = false) =>
+  async(dispatch: DispatchType) => {
+    try {
+      const res = await authAPI.loginRequest(email, password, rememberMe);
+      if (res.data.resultCode === 0) {
+        dispatch(authMeTC());
+      } else {
+        const errorMessage = res.data.messages.length ? res.data.messages[0] : 'some error';
+        dispatch(stopSubmit('login', { _error: errorMessage }));
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.warn(error.message);
+      }
+    }
+  };
 
-export const logoutTC = () => (
-  (dispatch: Dispatch) => {
-    authAPI.logoutRequest()
-      .then(res => {
-        if (res.data.resultCode === 0) {
-          dispatch(setUserAuthDataAC(null, null, null, false));
-        }
-      });
-  });
+export const logoutTC = () =>
+  async(dispatch: Dispatch) => {
+    try {
+      const res = await authAPI.logoutRequest();
+      if (res.data.resultCode === 0) {
+        dispatch(setUserAuthDataAC(null, null, null, false));
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.warn(error.message);
+      }
+    }
+  };
+
+interface initialStateType {
+  userId: number | null
+  email: string | null
+  login: string | null
+  isAuth: boolean,
+  isFetching: boolean,
+}
+
+type setUserAuthDataACType = ReturnType<typeof setUserAuthDataAC>
+export type ActionType = setUserAuthDataACType

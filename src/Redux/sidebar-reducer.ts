@@ -1,11 +1,3 @@
-type initialStateType = {
-  friends: {
-    id: number
-    name: string
-    ava: string
-  }[]
-}
-
 const initialState = {
   friends: [
     {
@@ -26,6 +18,16 @@ const initialState = {
   ],
 };
 
-export const sidebarReducer = (state: initialStateType = initialState, action: any): initialStateType => { //any template!
+export const sidebarReducer = (state: initialStateType = initialState, action: ActionType): initialStateType => { //any template!
   return state;
 };
+
+type initialStateType = {
+  friends: {
+    id: number
+    name: string
+    ava: string
+  }[]
+}
+
+type ActionType = any

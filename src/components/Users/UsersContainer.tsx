@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { followTC, getUsersTC, setCurrentPageAC, unFollowTC, UserType } from '../../Redux/users-reduc';
-import { StateTypeFromRedux } from '../../Redux/redux-store';
+import { followTC, getUsersTC, setCurrentPageAC, unFollowTC, UserType } from '../../Redux/users-reducer';
+import { RootStateType } from '../../Redux/store';
 import { Users } from './Users';
 import { Preloader } from '../common/Preloader/Preloader';
 import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
@@ -13,19 +13,6 @@ import {
   getTotalUsersCount,
   getUsersSelector,
 } from '../../Redux/selectors/user-selectors';
-
-type UsersPropsType = {
-  users: UserType[]
-  pageSize: number
-  totalUsersCount: number
-  currentPage: number
-  setCurrentPage: (page: number) => void
-  isFetching: boolean
-  isFollowingIngProgress: number[]
-  getUsers: (currentPage: number, pageSize: number) => void
-  unFollow: (usedId: number) => void
-  follow: (usedId: number) => void
-}
 
 class UsersContainer extends React.Component<UsersPropsType, UserType[]> {
   componentDidMount(): void {
@@ -58,36 +45,7 @@ class UsersContainer extends React.Component<UsersPropsType, UserType[]> {
   }
 }
 
-// type mapStateToPropsType = {
-//   users: UserType[]
-//   pageSize: number
-//   totalUsersCount: number
-//   currentPage: number
-//   isFetching: boolean
-//   isFollowingIngProgress: number[]
-// }
-//
-// const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => (
-//   {
-//     users: state.usersPage.users,
-//     pageSize: state.usersPage.pageSize,
-//     totalUsersCount: state.usersPage.totalUsersCount,
-//     currentPage: state.usersPage.currentPage,
-//     isFetching: state.usersPage.isFetching,
-//     isFollowingIngProgress: state.usersPage.followingInProgress,
-//   }
-// );
-
-type mapStateToPropsType = {
-  users: UserType[]
-  pageSize: number
-  totalUsersCount: number
-  currentPage: number
-  isFetching: boolean
-  isFollowingIngProgress: number[]
-}
-
-const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => (
+const mapStateToProps = (state: RootStateType): mapStateToPropsType => (
   {
     users: getUsersSelector(state),
     pageSize: getPageSize(state),
@@ -109,3 +67,25 @@ export default compose<React.ComponentType>(
   ),
   withAuthRedirectHOC,
 )(UsersContainer);
+
+type UsersPropsType = {
+  users: UserType[]
+  pageSize: number
+  totalUsersCount: number
+  currentPage: number
+  setCurrentPage: (page: number) => void
+  isFetching: boolean
+  isFollowingIngProgress: number[]
+  getUsers: (currentPage: number, pageSize: number) => void
+  unFollow: (usedId: number) => void
+  follow: (usedId: number) => void
+}
+
+type mapStateToPropsType = {
+  users: UserType[]
+  pageSize: number
+  totalUsersCount: number
+  currentPage: number
+  isFetching: boolean
+  isFollowingIngProgress: number[]
+}

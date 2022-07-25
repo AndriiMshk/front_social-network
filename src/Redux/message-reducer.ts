@@ -1,13 +1,4 @@
-import { DialogItemPropsType, MessageItemPropsType } from './store';
-
-const ADD_MESSAGE = 'ADD-MESSAGE';
-
-export type MessageStateType = {
-  messagesData: MessageItemPropsType[]
-  dialogsData: DialogItemPropsType[]
-}
-
-const initialState: MessageStateType = {
+const initialState = {
   messagesData: [
     { id: 1, message: 'message1' },
     { id: 2, message: 'message2' },
@@ -22,11 +13,9 @@ const initialState: MessageStateType = {
   ],
 };
 
-type ActionType = addMessageACType
-
-export const messageReducer = (state: MessageStateType = initialState, action: ActionType): MessageStateType => {
+export const messageReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
   switch (action.type) {
-    case ADD_MESSAGE:
+    case 'message/ADD-MESSAGE':
       return {
         ...state,
         messagesData: [
@@ -42,6 +31,8 @@ export const messageReducer = (state: MessageStateType = initialState, action: A
   }
 };
 
-type addMessageACType = ReturnType<typeof addMessageAC>
+export const addMessageAC = (message: string) => ({ type: 'message/ADD-MESSAGE', message } as const);
 
-export const addMessageAC = (message: string) => ({ type: ADD_MESSAGE, message } as const);
+type InitialStateType = typeof initialState
+type ActionType = addMessageACType
+type addMessageACType = ReturnType<typeof addMessageAC>

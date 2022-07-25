@@ -10,7 +10,7 @@ import ProfileContainer from './components/Profile/ProfileContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import { HeaderContainer } from './components/Header/HeaderContainer';
 import LoginContainer from './components/Login/LoginContainer';
-import { StateTypeFromRedux, UserFromReduxAuthType } from './Redux/redux-store';
+import { RootStateType } from './Redux/store';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { setInitializeTC } from './Redux/app-reducer';
@@ -21,7 +21,7 @@ type AppPropsType = {
   isInitialize: boolean
 }
 
-class AppContainer extends React.Component<AppPropsType, UserFromReduxAuthType> {
+class AppContainer extends React.Component<AppPropsType, RootStateType> {
 
   componentDidMount(): void {
     this.props.initialize();
@@ -52,7 +52,7 @@ type mapStateToPropsType = {
   isInitialize: boolean
 }
 
-const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
+const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
   isInitialize: state.app.isInitialize,
 });
 

@@ -1,12 +1,17 @@
 import React from 'react';
-import { friendsType } from '../../../Redux/store';
 import style from './BestFriedns.module.css';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { StateTypeFromRedux } from '../../../Redux/redux-store';
+import { RootStateType } from '../../../Redux/store';
+
+export type FriendsType = {
+  id: number
+  name: string
+  ava: string
+}
 
 type BestFriendsPropsType = {
-  bestFriends: friendsType[]
+  bestFriends: FriendsType[]
 }
 
 export const BestFriends: React.FC<BestFriendsPropsType> = (props) => {
@@ -25,7 +30,7 @@ export const BestFriends: React.FC<BestFriendsPropsType> = (props) => {
   );
 };
 
-const mapStateToProps = (state: StateTypeFromRedux) => {
+const mapStateToProps = (state: RootStateType) => {
   return {
     bestFriends: state.sidebar.friends,
   };

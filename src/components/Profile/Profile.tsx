@@ -10,6 +10,8 @@ export type ProfilePropsTpe = {
 }
 
 export const Profile: React.FC<ProfilePropsTpe> = (props) => {
+
+
   return (
     <div>
       <ProfileInfo

@@ -3,8 +3,9 @@ import { Profile } from './Profile';
 import { connect } from 'react-redux';
 import { setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profile-reducer';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { ProfileFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
+import { ProfileFromReduxType, RootStateType } from '../../Redux/store';
 import { compose } from 'redux';
+import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 
 export type ProfileType = {
   aboutMe: string
@@ -85,7 +86,7 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
   }
 }
 
-const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
+const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
   profile: state.profile.profile,
   status: state.profile.status,
   authorizedUserId: state.auth.userId,
@@ -101,6 +102,7 @@ export default compose<React.ComponentType>(
     },
   ),
   withRouter,
+  withAuthRedirectHOC,
 )(ProfileContainer);
 
 

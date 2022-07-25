@@ -3,7 +3,7 @@ import { Login, LoginPropsType } from './Login';
 import { AnyAction, compose } from 'redux';
 import { loginTC } from '../../Redux/auth-reducer';
 import { connect } from 'react-redux';
-import { StateTypeFromRedux } from '../../Redux/redux-store';
+import { RootStateType } from '../../Redux/store';
 import { ThunkDispatch } from 'redux-thunk';
 
 type mapStateToPropsType = {
@@ -22,11 +22,11 @@ class LoginContainer extends React.Component<DialogsContainerPropsType, LoginPro
   }
 }
 
-const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => ({
+const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
   isAuth: state.auth.isAuth,
 });
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<StateTypeFromRedux, unknown, AnyAction>): maDispatchToPropsType => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<RootStateType, unknown, AnyAction>): maDispatchToPropsType => {
   return {
     login: (email: string, password: string, rememberMe: boolean) =>
       dispatch(loginTC(email, password, rememberMe)),

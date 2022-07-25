@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { FormDataType } from '../components/Login/Login';
+import axios, { AxiosResponse } from 'axios';
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
@@ -19,7 +18,7 @@ export const usersAPI = {
   followPostRequest(userId: number) {
     return (
       instance
-        .post(`follow/${userId}`)
+        .post<ResponseTypeAPI>(`follow/${userId}`)
         .then((response) => response.data)
     );
   },
@@ -66,3 +65,8 @@ export const profileAPI = {
   },
 };
 
+export type ResponseTypeAPI<Data = {}> = {
+  data: Data,
+  messages: string[],
+  resultCode: number
+}

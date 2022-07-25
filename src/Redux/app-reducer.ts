@@ -1,37 +1,29 @@
-import { AnyAction } from 'redux';
 import { authMeTC } from './auth-reducer';
-import { ThunkDispatch } from 'redux-thunk';
-import { StateTypeFromRedux } from './redux-store';
-
-interface initialStateType {
-  isInitialize: boolean
-}
+import { DispatchType } from './store';
 
 const initialState = {
   isInitialize: false,
 };
 
-export type ActionType = SetInitializeACType
-
 export const appReducer = (state: initialStateType = initialState, action: ActionType): initialStateType => {
   switch (action.type) {
-    case 'APP/SET-INITIALIZE':
+    case 'app/SET-INITIALIZE':
       return { ...state, isInitialize: true };
     default:
       return state;
   }
 };
 
-type SetInitializeACType = ReturnType<typeof setInitializeAC>
-
 export const setInitializeAC = () => (
-  { type: 'APP/SET-INITIALIZE'} as const);
+  { type: 'app/SET-INITIALIZE' } as const);
 
-export const setInitializeTC = () => {
-  return (dispatch: ThunkDispatch<StateTypeFromRedux, unknown, AnyAction>) => {
-    Promise.all([dispatch(authMeTC())])
-      .then(() => {
-        dispatch(setInitializeAC());
-      });
-  };
+export const setInitializeTC = () => (dispatch: DispatchType) => {
+  Promise.all([dispatch(authMeTC())])
+    .then(() => {
+      dispatch(setInitializeAC());
+    });
 };
+
+type SetInitializeACType = ReturnType<typeof setInitializeAC>
+export type ActionType = SetInitializeACType
+type initialStateType = typeof initialState

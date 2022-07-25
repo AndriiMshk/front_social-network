@@ -3,7 +3,7 @@ import { Dialogs, DialogsPropsType } from './Dialogs';
 import { addMessageAC } from '../../Redux/message-reducer';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
-import { DialogsFromReduxType, StateTypeFromRedux } from '../../Redux/redux-store';
+import { DialogsFromReduxType, RootStateType } from '../../Redux/store';
 import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
 
 type mapStateToPropsType = {
@@ -22,7 +22,7 @@ class DialogsContainer extends React.Component<DialogsContainerPropsType, Dialog
   }
 }
 
-const mapStateToProps = (state: StateTypeFromRedux): mapStateToPropsType => {
+const mapStateToProps = (state: RootStateType): mapStateToPropsType => {
   return {
     dialogs: state.dialogs,
   };

@@ -2,8 +2,20 @@ import React from 'react';
 import style from './Dialogs.module.css';
 import { MessageItem } from './Massage/Message';
 import { DialogItem } from './DialogItem/Dialog';
-import { DialogItemPropsType, MessageItemPropsType, MessageStateType } from '../../Redux/store';
 import { AddMessage } from './AddMassage';
+
+export type MessageItemPropsType = {
+  id: string | number
+  message: string
+}
+export type DialogItemPropsType = {
+  id: string | number
+  name: string
+}
+export type MessageStateType = {
+  messagesData: MessageItemPropsType[]
+  dialogsData: DialogItemPropsType[]
+}
 
 export type DialogsPropsType = {
   dialogs: MessageStateType
