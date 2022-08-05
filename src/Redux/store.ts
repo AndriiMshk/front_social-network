@@ -1,4 +1,4 @@
-import { AnyAction, applyMiddleware, combineReducers, createStore } from 'redux';
+import { AnyAction, applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { sidebarReducer } from './sidebar-reducer';
 import { profileReducer } from './profile-reducer';
 import { messageReducer } from './message-reducer';
@@ -20,8 +20,10 @@ const rootReducer = combineReducers(
   },
 );
 
-// @ts-ignore
-export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+// @ts-ignore     FOR REDUX CHROME DEVTOOLS
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
+
 export type RootStateType = ReturnType<typeof rootReducer>
 export const stateFromRedux = store.getState();
 

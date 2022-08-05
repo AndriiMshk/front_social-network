@@ -20,7 +20,7 @@ export const Pagination: React.FC<PaginationPropsType> = ({ currentPage, totalUs
 
   return (
     <div>
-      {currentPage > 1
+      {currentPage > 3
         ? <span
           onClick={() => onPageChangeHandler(1)}
         >{1}...</span>
@@ -34,7 +34,7 @@ export const Pagination: React.FC<PaginationPropsType> = ({ currentPage, totalUs
             : ''}>{` ${el} `}
           </span>,
       )}
-      {currentPage < pagesCount
+      {currentPage < pagesCount - 2
         ? <span
           onClick={() => onPageChangeHandler(pagesCount)}
         >...{pagesCount}</span>
