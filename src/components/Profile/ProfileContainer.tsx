@@ -52,35 +52,45 @@ type PropsType = RouteComponentProps<PathParamsType> & ProfileContainerPropsType
 
 class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> {
 
-  componentDidMount(): void {
+  updateProfileHelper(): void {
     let userId = this.props.match.params.userId;
-    if (!userId) {
-      if (this.props.authorizedUserId) {
-        userId = this.props.authorizedUserId.toString();
-        this.props.getUserStatus(userId);
-        this.props.setUserProfile(userId);
-      } else {
-        this.props.history.push('/login');  // like Redirect
-      }
+    if (!userId && this.props.authorizedUserId) {
+      userId = this.props.authorizedUserId.toString();
+    } else {
+      this.props.history.push('/login');  // like Redirect
     }
+    this.props.getUserStatus(userId);
+    this.props.setUserProfile(userId);
+  }
+
+  componentDidMount(): void {
+    this.updateProfileHelper();
   }
 
   componentDidUpdate(
     prevProps: Readonly<PropsType>,
     prevState: Readonly<ProfileFromReduxType>, snapshot?: any,
   ): void {
+    if (prevProps.match.params.userId !== this.props.match.params.userId) {
+      this.updateProfileHelper();
+    }
     if (prevProps.status !== this.props.status) {
       this.setState({ status: this.props.status });
     }
   }
 
   render() {
+    console.log(this.props.profile?.userId);
+    console.log(+this.props.match.params.userId);
+    console.log(this.props.authorizedUserId);
+    console.log(this.props.profile?.userId === +this.props.match.params.userId);
     return (
       <Profile
         {...this.props}
         profile={this.props.profile}
         status={this.props.status}
         updateUserStatus={this.props.updateUserStatus}
+        idMyProfilePage={this.props.profile?.userId === +this.props.match.params.userId}
       />
     );
   }

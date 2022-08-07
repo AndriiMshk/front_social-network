@@ -8,6 +8,7 @@ export type ProfileInfoPropsTpe = {
   profile: ProfileType | null
   status: string
   updateUserStatus: (status: string) => void
+  idMyProfilePage: boolean
 }
 
 export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
@@ -16,10 +17,10 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
   }
   return (
     <div>
-
       <span>status: {props.status}</span>
       <div className={style.descriptionBlock}>
         <img src={props.profile.photos.small} alt="" />
+        {!props.idMyProfilePage && <button>11111</button>}
         <ProfileStatus
           status={props.status}
           updateUserStatus={props.updateUserStatus}

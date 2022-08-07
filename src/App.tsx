@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { setInitializeTC } from './Redux/app-reducer';
 import { Preloader } from './components/common/Preloader/Preloader';
+import { lazyRenderHOC } from './HOC/LazyRenderHOC';
 
 type AppPropsType = {
   initialize: () => void
@@ -36,12 +37,12 @@ class AppContainer extends React.Component<AppPropsType, RootStateType> {
         <Navbar />
         <div className="app-wrapper-content">
           <Route path={'/profile/:userId?'} render={() => <ProfileContainer />} />
-          <Route path={'/dialogs'} render={() => <DialogsContainer />} />
-          <Route path={'/users'} render={() => <UsersContainer />} />
+          <Route path={'/dialogs'} render={lazyRenderHOC(DialogsContainer)} />
+          <Route path={'/users'} render={lazyRenderHOC(UsersContainer)} />
           <Route path={'/news'} component={News} />
           <Route path={'/music'} component={Music} />
           <Route path={'/settings'} component={Settings} />
-          <Route path={'/login'} component={LoginContainer} />
+          <Route path={'/login'} render={lazyRenderHOC(LoginContainer)} />
         </div>
       </div>
     );

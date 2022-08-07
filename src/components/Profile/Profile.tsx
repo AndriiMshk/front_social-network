@@ -7,6 +7,7 @@ export type ProfilePropsTpe = {
   profile: ProfileType | null
   status: string
   updateUserStatus: (status: string) => void
+  idMyProfilePage: boolean
 }
 
 export const Profile: React.FC<ProfilePropsTpe> = (props) => {
@@ -18,6 +19,7 @@ export const Profile: React.FC<ProfilePropsTpe> = (props) => {
         profile={props.profile}
         status={props.status}
         updateUserStatus={props.updateUserStatus}
+        idMyProfilePage={props.idMyProfilePage}
       />
       <MyPostsContainer />
     </div>
