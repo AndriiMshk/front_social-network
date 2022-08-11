@@ -4,3 +4,7 @@
 .backImg img {
     height: 150px;
 }
+
+h5 {
+  display: inline-block;
+}

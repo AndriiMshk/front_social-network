@@ -7,12 +7,13 @@ export type ProfilePropsTpe = {
   profile: ProfileType | null
   status: string
   updateUserStatus: (status: string) => void
-  idMyProfilePage: boolean
+  isMyProfilePage: boolean
   setPhoto: any
+  updateProfileAbout: (contact: string, value: string | boolean) => void
+  updateProfileContacts: (contact: string, value: string) => void
 }
 
 export const Profile: React.FC<ProfilePropsTpe> = (props) => {
-
 
   return (
     <div>
@@ -20,8 +21,10 @@ export const Profile: React.FC<ProfilePropsTpe> = (props) => {
         profile={props.profile}
         status={props.status}
         updateUserStatus={props.updateUserStatus}
-        idMyProfilePage={props.idMyProfilePage}
+        isMyProfilePage={props.isMyProfilePage}
         setPhoto={props.setPhoto}
+        updateProfileAbout={props.updateProfileAbout}
+        updateProfileContacts={props.updateProfileContacts}
       />
       <MyPostsContainer />
     </div>

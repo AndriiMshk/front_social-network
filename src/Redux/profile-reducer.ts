@@ -1,6 +1,6 @@
 import { ProfileType } from '../components/Profile/ProfileContainer';
 import { profileAPI } from '../api/api';
-import { DispatchType } from './store';
+import { DispatchType, RootStateType } from './store';
 import axios from 'axios';
 
 const initialState = {
@@ -29,6 +29,16 @@ export const profileReducer = (state: initialStateType = initialState, action: a
       return { ...state, status: action.status };
     case 'profile/SET-PHOTO':
       return { ...state, profile: { ...state.profile, photos: action.photos } };
+    case 'profile/UPDATE-USER-ABOUT':
+      return { ...state, profile: { ...state.profile, [action.payload.contact]: action.payload.value } };
+    case 'profile/UPDATE-USER-CONTACTS':
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          contacts: { ...state.profile?.contacts, [action.payload.contact]: action.payload.value },
+        },
+      };
     default:
       return state;
   }
@@ -41,6 +51,14 @@ export const setUserProfileAC = (profile: ProfileType) => ({
 } as const);
 export const setStatusAC = (status: string) => ({ type: 'profile/SET-STATUS', status } as const);
 export const setPhotoAC = (photos: any) => ({ type: 'profile/SET-PHOTO', photos } as const);
+export const updateUserAboutAC = (contact: string, value: string | boolean) => ({
+  type: 'profile/UPDATE-USER-ABOUT',
+  payload: { contact, value },
+} as const);
+export const updateUserContactsAC = (contact: string, value: string) => ({
+  type: 'profile/UPDATE-USER-CONTACTS',
+  payload: { contact, value },
+} as const);
 
 export const setUserProfileTC = (userId: number) => async(dispatch: DispatchType) => {
   try {
@@ -90,6 +108,36 @@ export const setPhotoTC = (file: any) => async(dispatch: DispatchType) => {
   }
 };
 
+export const updateProfileContactsTC = (contact: string, value: string) =>
+  async(dispatch: DispatchType, getState: () => RootStateType) => {
+    const currentProfile = getState().profile.profile;
+    try {
+      await profileAPI.updateProfile(
+        {
+          ...currentProfile,
+          contacts: { ...currentProfile.contacts, [contact]: value },
+        });
+      dispatch(updateUserContactsAC(contact, value));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.warn(error.message);
+      }
+    }
+  };
+
+export const updateProfileAboutTC = (contact: string, value: string | boolean) =>
+  async(dispatch: DispatchType, getState: () => RootStateType) => {
+    const currentProfile = getState().profile.profile;
+    try {
+      await profileAPI.updateProfile({ ...currentProfile, [contact]: value });
+      dispatch(updateUserAboutAC(contact, value));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.warn(error.message);
+      }
+    }
+  };
+
 type initialStateType = {
   postsData: { id: number, message: string, likeCounts: number }[]
   profile: ProfileType | null
@@ -100,9 +148,13 @@ type addPostACType = ReturnType<typeof addPostAC>
 type setUserProfileType = ReturnType<typeof setUserProfileAC>
 type setStatusACType = ReturnType<typeof setStatusAC>
 type setPhotoACType = ReturnType<typeof setPhotoAC>
+type updateUserAboutACType = ReturnType<typeof updateUserAboutAC>
+type updateUserContactsACType = ReturnType<typeof updateUserContactsAC>
 
 type actionType =
   | addPostACType
   | setUserProfileType
   | setStatusACType
   | setPhotoACType
+  | updateUserAboutACType
+  | updateUserContactsACType

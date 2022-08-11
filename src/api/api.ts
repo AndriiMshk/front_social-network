@@ -69,10 +69,31 @@ export const profileAPI = {
     return instance.put(`/profile/photo`, formData,
       { headers: { 'Content-Type': 'multipart/form-data' } });
   },
+  updateProfile(updatedProfile: UpdatedProfileType) {
+    return instance.put(`/profile`, updatedProfile);
+  },
 };
 
 export type ResponseTypeAPI<Data = {}> = {
   data: Data,
   messages: string[],
   resultCode: number
+}
+
+export type UpdatedProfileType = {
+  aboutMe?: string
+  userId?: number
+  lookingForAJob?: boolean
+  lookingForAJobDescription?: string
+  fullName?: string
+  contacts?: {
+    github?: string
+    vk?: string
+    facebook?: string
+    instagram?: string
+    twitter?: string
+    website?: string
+    youtube?: string
+    mainLink?: string
+  }
 }

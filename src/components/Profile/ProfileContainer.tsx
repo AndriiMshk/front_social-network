@@ -1,55 +1,18 @@
 import React from 'react';
 import { Profile } from './Profile';
 import { connect } from 'react-redux';
-import { setPhotoTC, setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profile-reducer';
+import {
+  setPhotoTC,
+  setStatusTC,
+  setUserProfileTC,
+  updateProfileAboutTC,
+  updateProfileContactsTC,
+  updateStatusTC,
+} from '../../Redux/profile-reducer';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, RootStateType } from '../../Redux/store';
 import { compose } from 'redux';
 import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
-
-export type ProfileType = {
-  aboutMe: string
-  userId: number
-  lookingForAJob: boolean
-  lookingForAJobDescription: string
-  fullName: string
-  contacts: {
-    github: string
-    vk: string
-    facebook: string
-    instagram: string
-    twitter: string
-    website: string
-    youtube: string
-    mainLink: string
-  }
-  photos: {
-    small: string
-    large: string
-  }
-}
-
-type mapStateToPropsType = {
-  profile: ProfileType | null
-  status: string
-  authorizedUserId: number | null
-  isAuth: boolean
-}
-
-type mapDispatchPropsType = {
-  setUserProfile: (userId: string) => void
-  getUserStatus: (userId: string) => void
-  updateUserStatus: (status: string) => void
-  setPhoto: any
-}
-
-type PathParamsType = {
-  userId: string
-}
-
-// Type for withRouter
-type ProfileContainerPropsType = mapStateToPropsType & mapDispatchPropsType
-type PropsType = RouteComponentProps<PathParamsType> & ProfileContainerPropsType
 
 class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> {
 
@@ -89,8 +52,10 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
         profile={this.props.profile}
         status={this.props.status}
         updateUserStatus={this.props.updateUserStatus}
-        idMyProfilePage={this.props.profile?.userId === +this.props.match.params.userId}
+        isMyProfilePage={this.props.profile?.userId === +this.props.match.params.userId}
         setPhoto={this.props.setPhoto}
+        updateProfileAbout={this.props.updateProfileAbout}
+        updateProfileContacts={this.props.updateProfileContacts}
       />
     );
   }
@@ -109,12 +74,59 @@ export default compose<React.ComponentType>(
       setUserProfile: setUserProfileTC,
       getUserStatus: setStatusTC,
       updateUserStatus: updateStatusTC,
-      setPhoto: setPhotoTC
+      setPhoto: setPhotoTC,
+      updateProfileContacts: updateProfileContactsTC,
+      updateProfileAbout: updateProfileAboutTC,
     },
   ),
   withRouter,
   withAuthRedirectHOC,
 )(ProfileContainer);
 
+export type ProfileType = {
+  aboutMe: string
+  userId: number
+  lookingForAJob: boolean
+  lookingForAJobDescription: string
+  fullName: string
+  contacts: {
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
+  }
+  photos: {
+    small: string
+    large: string
+  }
+}
+
+type mapStateToPropsType = {
+  profile: ProfileType | null
+  status: string
+  authorizedUserId: number | null
+  isAuth: boolean
+}
+
+type mapDispatchPropsType = {
+  setUserProfile: (userId: string) => void
+  getUserStatus: (userId: string) => void
+  updateUserStatus: (status: string) => void
+  setPhoto: any
+  updateProfileAbout: (contact: string, value: string | boolean) => void
+  updateProfileContacts: (contact: string, value: string) => void
+}
+
+type PathParamsType = {
+  userId: string
+}
+
+// Type for withRouter
+type ProfileContainerPropsType = mapStateToPropsType & mapDispatchPropsType
+type PropsType = RouteComponentProps<PathParamsType> & ProfileContainerPropsType
 
 
