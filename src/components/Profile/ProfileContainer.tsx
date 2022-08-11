@@ -53,14 +53,16 @@ type PropsType = RouteComponentProps<PathParamsType> & ProfileContainerPropsType
 class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> {
 
   updateProfileHelper(): void {
-    let userId = this.props.match.params.userId;
-    if (!userId && this.props.authorizedUserId) {
-      userId = this.props.authorizedUserId.toString();
+    if (this.props.authorizedUserId) {
+      let userId = this.props.match.params.userId;
+      if (!userId) {
+        userId = this.props.authorizedUserId.toString();
+      }
+      this.props.getUserStatus(userId);
+      this.props.setUserProfile(userId);
     } else {
       this.props.history.push('/login');  // like Redirect
     }
-    this.props.getUserStatus(userId);
-    this.props.setUserProfile(userId);
   }
 
   componentDidMount(): void {
@@ -80,10 +82,6 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
   }
 
   render() {
-    console.log(this.props.profile?.userId);
-    console.log(+this.props.match.params.userId);
-    console.log(this.props.authorizedUserId);
-    console.log(this.props.profile?.userId === +this.props.match.params.userId);
     return (
       <Profile
         {...this.props}
@@ -114,8 +112,6 @@ export default compose<React.ComponentType>(
   withRouter,
   withAuthRedirectHOC,
 )(ProfileContainer);
-
-
 
 
 

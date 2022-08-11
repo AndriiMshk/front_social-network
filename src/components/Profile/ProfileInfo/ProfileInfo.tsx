@@ -20,7 +20,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
       <span>status: {props.status}</span>
       <div className={style.descriptionBlock}>
         <img src={props.profile.photos.small} alt="" />
-        {!props.idMyProfilePage && <button>11111</button>}
+        {!props.idMyProfilePage && <button>Change photo</button>}
         <ProfileStatus
           status={props.status}
           updateUserStatus={props.updateUserStatus}
