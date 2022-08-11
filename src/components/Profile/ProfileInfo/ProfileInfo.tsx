@@ -2,18 +2,7 @@ import React from 'react';
 import style from './ProfileInfo.module.css';
 import { Preloader } from '../../common/Preloader/Preloader';
 import { ProfileType } from '../ProfileContainer';
-import { ProfileStatus } from './ProfileStatus';
 import { EditableSpan } from './EditableSpan';
-
-export type ProfileInfoPropsTpe = {
-  profile: ProfileType | null
-  status: string
-  updateUserStatus: (status: string) => void
-  isMyProfilePage: boolean
-  setPhoto: any
-  updateProfileAbout: (contact: string, value: string | boolean) => void
-  updateProfileContacts: (contact: string, value: string) => void
-}
 
 export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
 
@@ -30,7 +19,11 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
   return (
     <div>
       <div className={style.descriptionBlock}>
-        <div><h5>Name:</h5>{props.profile.fullName}</div>
+        <div><h3><EditableSpan
+          isMyProfilePage={props.isMyProfilePage}
+          value={props.profile.fullName}
+          updateValue={(value) => props.updateProfileAbout('fullName', value)}
+        /></h3></div>
         <img src={props.profile.photos.small} alt="" />
         {!props.isMyProfilePage &&
         <input
@@ -38,10 +31,12 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
           onChange={(e) => onChangePhotoSelectorHandler(e.target.files)}
         />}
         <h5>Status:
-          <ProfileStatus
-            status={props.status}
-            updateUserStatus={props.updateUserStatus}
+          <EditableSpan
+            value={props.status}
+            updateValue={props.updateUserStatus}
+            isMyProfilePage={props.isMyProfilePage}
           />
+
         </h5>
         <hr />
         <div>
@@ -94,6 +89,16 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
     </div>
   );
 };
+
+export type ProfileInfoPropsTpe = {
+  profile: ProfileType | null
+  status: string
+  updateUserStatus: (status: string) => void
+  isMyProfilePage: boolean
+  setPhoto: any
+  updateProfileAbout: (contact: string, value: string | boolean) => void
+  updateProfileContacts: (contact: string, value: string) => void
+}
 
 
 

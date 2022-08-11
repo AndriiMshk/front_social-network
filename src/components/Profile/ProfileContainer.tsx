@@ -46,6 +46,7 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
   }
 
   render() {
+
     return (
       <Profile
         {...this.props}

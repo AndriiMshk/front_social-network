@@ -1,4 +1,5 @@
 import React from 'react';
+import { ProfileFromReduxType } from '../../../Redux/store';
 
 type EditableSpanPropsType = {
   value: string
@@ -14,6 +15,15 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
     value: this.props.value,
   };
 
+  componentDidUpdate(
+    prevProps: Readonly<EditableSpanPropsType>,
+    prevState: Readonly<ProfileFromReduxType>, snapshot?: any,
+  ): void {
+    if (prevProps.value !== this.props.value) {
+      this.setState({ value: this.props.value });
+    }
+  }
+
   activateEditMode() {
     if (!this.props.isMyProfilePage) {
       this.setState( //асинхронная шянга
@@ -26,21 +36,34 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
     this.setState( //асинхронная шянга
       { editMode: false },
     );
-    this.props.updateValue(this.state.value);
+    if (this.state.value !== this.props.value) {
+      this.props.updateValue(this.state.value);
+    }
   };
 
   onChangeValueHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: event.currentTarget.value });
   };
 
-  render(): React.ReactNode {
+  render() {
+
+    const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        this.deActivateEditMode();
+      } else if (e.key === 'Escape') {
+        this.setState({ editMode: false });
+        this.state.value = this.props.value;
+      }
+    };
+
     return (
+
       <div>
         {!this.state.editMode
           ?
           <div>
-            <span
-              onDoubleClick={this.activateEditMode.bind(this)}  // interesting case
+            <span style={!this.props.isMyProfilePage ? { cursor: 'pointer' } : {}}
+                  onDoubleClick={this.activateEditMode.bind(this)}  // interesting case
             >{this.props.value || '--------------'}</span>
           </div>
           :
@@ -50,6 +73,7 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
               onChange={this.onChangeValueHandler}
               autoFocus
               onBlur={this.deActivateEditMode}
+              onKeyDown={(e) => onKeyPressHandler(e)}
             />
           </div>}
       </div>
