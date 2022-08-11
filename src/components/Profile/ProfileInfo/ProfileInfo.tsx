@@ -74,7 +74,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
                 <div key={index}><h5>{el}: </h5>
                   <EditableSpan
                     //            @ts-ignore
-                    value={props.profile.contacts[el]}
+                    value={props.profile.contacts[el] || ''}
                     updateValue={(value) => props.updateProfileContacts(el, value)}
                     isMyProfilePage={props.isMyProfilePage}
                   />
