@@ -17,8 +17,6 @@ export type ProfileInfoPropsTpe = {
 
 export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
 
-  const contactsData = ['facebook', 'github', 'vk', 'instagram', 'twitter', 'website', 'youtube', 'mainLink'];
-
   const onChangePhotoSelectorHandler = (file: FileList | null) => {
     if (file) {
       props.setPhoto(file[0]);
@@ -70,15 +68,27 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
         /></div>
         <hr />
         <div><h5>Contacts:</h5></div>
-        {contactsData.map((el, index) =>
-          <div key={index}><h5>{el}</h5>
-            <EditableSpan
-              //            @ts-ignore
-              value={props.profile.contacts[el] || ''}
-              updateValue={(value) => props.updateProfileContacts(el, value)}
-              isMyProfilePage={props.isMyProfilePage}
-            />
-          </div>,
+        {Object.keys(props.profile.contacts).map((el, index) => {
+            if (!props.isMyProfilePage) {
+              return (
+                <div key={index}><h5>{el}: </h5>
+                  <EditableSpan
+                    //            @ts-ignore
+                    value={props.profile.contacts[el]}
+                    updateValue={(value) => props.updateProfileContacts(el, value)}
+                    isMyProfilePage={props.isMyProfilePage}
+                  />
+                </div>);
+            } else { // @ts-ignore
+              if (props.profile.contacts[el]) {
+                return (
+                  <div key={index}><h5>{el}: </h5>
+                    {/*@ts-ignore*/}
+                    <div>{props.profile.contacts[el]}</div>
+                  </div>);
+              }
+            }
+          },
         )}
       </div>
     </div>
