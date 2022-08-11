@@ -13,7 +13,7 @@ const initialState = {
   status: '',
 };
 
-export const profileReducer = (state: initialStateType = initialState, action: actionType): initialStateType => {
+export const profileReducer = (state: initialStateType = initialState, action: actionType): any => {
   switch (action.type) {
     case 'profile/ADD-POST':
       return {
@@ -27,6 +27,8 @@ export const profileReducer = (state: initialStateType = initialState, action: a
       return { ...state, profile: action.payload };
     case 'profile/SET-STATUS':
       return { ...state, status: action.status };
+    case 'profile/SET-PHOTO':
+      return { ...state, profile: { ...state.profile, photos: action.photos } };
     default:
       return state;
   }
@@ -37,7 +39,8 @@ export const setUserProfileAC = (profile: ProfileType) => ({
   type: 'profile/SET_USER_PROFILE',
   payload: profile,
 } as const);
-export const setStatusAC = (status: string) => ({ type: 'profile/SET-STATUS', status: status } as const);
+export const setStatusAC = (status: string) => ({ type: 'profile/SET-STATUS', status } as const);
+export const setPhotoAC = (photos: any) => ({ type: 'profile/SET-PHOTO', photos } as const);
 
 export const setUserProfileTC = (userId: number) => async(dispatch: DispatchType) => {
   try {
@@ -74,6 +77,19 @@ export const updateStatusTC = (status: string) => async(dispatch: DispatchType) 
   }
 };
 
+export const setPhotoTC = (file: any) => async(dispatch: DispatchType) => {
+  try {
+    const res = await profileAPI.setPhoto(file);
+    if (res.data.resultCode === 0) {
+      dispatch(setPhotoAC(res.data.data.photos));
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.warn(error.message);
+    }
+  }
+};
+
 type initialStateType = {
   postsData: { id: number, message: string, likeCounts: number }[]
   profile: ProfileType | null
@@ -83,8 +99,10 @@ type initialStateType = {
 type addPostACType = ReturnType<typeof addPostAC>
 type setUserProfileType = ReturnType<typeof setUserProfileAC>
 type setStatusACType = ReturnType<typeof setStatusAC>
+type setPhotoACType = ReturnType<typeof setPhotoAC>
 
 type actionType =
   | addPostACType
   | setUserProfileType
   | setStatusACType
+  | setPhotoACType

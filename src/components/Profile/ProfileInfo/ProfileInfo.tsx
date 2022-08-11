@@ -9,9 +9,17 @@ export type ProfileInfoPropsTpe = {
   status: string
   updateUserStatus: (status: string) => void
   idMyProfilePage: boolean
+  setPhoto: any
 }
 
 export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
+
+  const onChangePhotoSelectorHandler = (file: FileList | null) => {
+    if (file) {
+      props.setPhoto(file[0]);
+    }
+  };
+
   if (!props.profile) {
     return <Preloader />;
   }
@@ -20,7 +28,11 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
       <span>status: {props.status}</span>
       <div className={style.descriptionBlock}>
         <img src={props.profile.photos.small} alt="" />
-        {!props.idMyProfilePage && <button>Change photo</button>}
+        {!props.idMyProfilePage &&
+        <input
+          type="file"
+          onChange={(e) => onChangePhotoSelectorHandler(e.target.files)}
+        />}
         <ProfileStatus
           status={props.status}
           updateUserStatus={props.updateUserStatus}

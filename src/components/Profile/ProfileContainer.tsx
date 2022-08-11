@@ -1,7 +1,7 @@
 import React from 'react';
 import { Profile } from './Profile';
 import { connect } from 'react-redux';
-import { setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profile-reducer';
+import { setPhotoTC, setStatusTC, setUserProfileTC, updateStatusTC } from '../../Redux/profile-reducer';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, RootStateType } from '../../Redux/store';
 import { compose } from 'redux';
@@ -40,6 +40,7 @@ type mapDispatchPropsType = {
   setUserProfile: (userId: string) => void
   getUserStatus: (userId: string) => void
   updateUserStatus: (status: string) => void
+  setPhoto: any
 }
 
 type PathParamsType = {
@@ -89,6 +90,7 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
         status={this.props.status}
         updateUserStatus={this.props.updateUserStatus}
         idMyProfilePage={this.props.profile?.userId === +this.props.match.params.userId}
+        setPhoto={this.props.setPhoto}
       />
     );
   }
@@ -107,6 +109,7 @@ export default compose<React.ComponentType>(
       setUserProfile: setUserProfileTC,
       getUserStatus: setStatusTC,
       updateUserStatus: updateStatusTC,
+      setPhoto: setPhotoTC
     },
   ),
   withRouter,
