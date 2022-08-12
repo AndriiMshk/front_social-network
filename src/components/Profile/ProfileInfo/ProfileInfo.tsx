@@ -25,7 +25,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
           updateValue={(value) => props.updateProfileAbout('fullName', value)}
         /></h3></div>
         <img src={props.profile.photos.small} alt="" />
-        {!props.isMyProfilePage &&
+        {props.isMyProfilePage &&
         <input
           type="file"
           onChange={(e) => onChangePhotoSelectorHandler(e.target.files)}
@@ -36,12 +36,11 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
             updateValue={props.updateUserStatus}
             isMyProfilePage={props.isMyProfilePage}
           />
-
         </h5>
         <hr />
         <div>
           Looking for a job:
-          {props.isMyProfilePage
+          {!props.isMyProfilePage
             ? <span> {props.profile.lookingForAJob ? 'Yes' : 'No'}</span>
             : <input
               type="checkbox"
@@ -64,7 +63,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
         <hr />
         <div><h5>Contacts:</h5></div>
         {Object.keys(props.profile.contacts).map((el, index) => {
-            if (!props.isMyProfilePage) {
+            if (props.isMyProfilePage) {
               return (
                 <div key={index}><h5>{el}: </h5>
                   <EditableSpan
@@ -72,6 +71,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
                     value={props.profile.contacts[el] || ''}
                     updateValue={(value) => props.updateProfileContacts(el, value)}
                     isMyProfilePage={props.isMyProfilePage}
+                    error={props.error}
                   />
                 </div>);
             } else { // @ts-ignore
@@ -85,6 +85,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
             }
           },
         )}
+        <div>{props.error}</div>
       </div>
     </div>
   );
@@ -98,6 +99,7 @@ export type ProfileInfoPropsTpe = {
   setPhoto: any
   updateProfileAbout: (contact: string, value: string | boolean) => void
   updateProfileContacts: (contact: string, value: string) => void
+  error: string
 }
 
 

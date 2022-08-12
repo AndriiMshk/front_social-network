@@ -11,10 +11,10 @@ export type ProfilePropsTpe = {
   setPhoto: any
   updateProfileAbout: (contact: string, value: string | boolean) => void
   updateProfileContacts: (contact: string, value: string) => void
+  error: string
 }
 
 export const Profile: React.FC<ProfilePropsTpe> = (props) => {
-
   return (
     <div>
       <ProfileInfo
@@ -25,6 +25,7 @@ export const Profile: React.FC<ProfilePropsTpe> = (props) => {
         setPhoto={props.setPhoto}
         updateProfileAbout={props.updateProfileAbout}
         updateProfileContacts={props.updateProfileContacts}
+        error={props.error}
       />
       <MyPostsContainer />
     </div>

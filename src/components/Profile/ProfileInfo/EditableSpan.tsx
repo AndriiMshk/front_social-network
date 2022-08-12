@@ -5,15 +5,21 @@ type EditableSpanPropsType = {
   value: string
   updateValue: (status: string) => void
   isMyProfilePage: boolean
+  error?: string
 }
-type StateType = { editMode: boolean, value: string }
+type StateType = { editMode: boolean, value: string, error?: string }
 
 export class EditableSpan extends React.Component<EditableSpanPropsType, StateType> {
 
   state = {
     editMode: false,
     value: this.props.value,
+    error: this.props.error,
   };
+
+  componentDidMount(): void {
+    this.setState({ value: this.props.value });
+  }
 
   componentDidUpdate(
     prevProps: Readonly<EditableSpanPropsType>,
@@ -25,20 +31,19 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
   }
 
   activateEditMode() {
-    if (!this.props.isMyProfilePage) {
-      this.setState( //асинхронная шянга
-        { editMode: true },
-      );
+    if (this.props.isMyProfilePage) {
+      this.setState({ editMode: true });
+      if (this.props.error) {
+        this.setState({ value: this.props.value });
+      }
     }
   };
 
   deActivateEditMode = () => {
+    this.props.updateValue(this.state.value);
     this.setState( //асинхронная шянга
       { editMode: false },
     );
-    if (this.state.value !== this.props.value) {
-      this.props.updateValue(this.state.value);
-    }
   };
 
   onChangeValueHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +67,7 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
         {!this.state.editMode
           ?
           <div>
-            <span style={!this.props.isMyProfilePage ? { cursor: 'pointer' } : {}}
+            <span style={this.props.isMyProfilePage ? { cursor: 'pointer' } : {}}
                   onDoubleClick={this.activateEditMode.bind(this)}  // interesting case
             >{this.props.value || '--------------'}</span>
           </div>
@@ -75,7 +80,8 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
               onBlur={this.deActivateEditMode}
               onKeyDown={(e) => onKeyPressHandler(e)}
             />
-          </div>}
+          </div>
+        }
       </div>
     );
   }

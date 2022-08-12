@@ -43,6 +43,9 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
     if (prevProps.status !== this.props.status) {
       this.setState({ status: this.props.status });
     }
+    if (prevProps.error !== this.props.error) {
+      this.setState({ error: this.props.error });
+    }
   }
 
   render() {
@@ -53,10 +56,11 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
         profile={this.props.profile}
         status={this.props.status}
         updateUserStatus={this.props.updateUserStatus}
-        isMyProfilePage={this.props.profile?.userId === +this.props.match.params.userId}
+        isMyProfilePage={this.props.profile?.userId !== +this.props.match.params.userId}
         setPhoto={this.props.setPhoto}
         updateProfileAbout={this.props.updateProfileAbout}
         updateProfileContacts={this.props.updateProfileContacts}
+        error={this.props.error}
       />
     );
   }
@@ -67,6 +71,7 @@ const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
   status: state.profile.status,
   authorizedUserId: state.auth.userId,
   isAuth: state.auth.isAuth,
+  error: state.app.error
 });
 
 export default compose<React.ComponentType>(
@@ -111,6 +116,7 @@ type mapStateToPropsType = {
   status: string
   authorizedUserId: number | null
   isAuth: boolean
+  error: string
 }
 
 type mapDispatchPropsType = {

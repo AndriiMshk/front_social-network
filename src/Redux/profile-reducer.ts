@@ -2,6 +2,7 @@ import { ProfileType } from '../components/Profile/ProfileContainer';
 import { profileAPI } from '../api/api';
 import { DispatchType, RootStateType } from './store';
 import axios from 'axios';
+import { setErrorAC } from './app-reducer';
 
 const initialState = {
   postsData: [
@@ -112,12 +113,18 @@ export const updateProfileContactsTC = (contact: string, value: string) =>
   async(dispatch: DispatchType, getState: () => RootStateType) => {
     const currentProfile = getState().profile.profile;
     try {
-      await profileAPI.updateProfile(
+      const res = await profileAPI.updateProfile(
         {
           ...currentProfile,
           contacts: { ...currentProfile.contacts, [contact]: value },
         });
-      dispatch(updateUserContactsAC(contact, value));
+      if (res.data.resultCode === 0) {
+        dispatch(updateUserContactsAC(contact, value));
+        dispatch(setErrorAC(''))
+      }
+      else {
+        dispatch(setErrorAC(res.data.messages[0]))
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.warn(error.message);
