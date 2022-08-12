@@ -123,7 +123,7 @@ type mapDispatchPropsType = {
   setUserProfile: (userId: string) => void
   getUserStatus: (userId: string) => void
   updateUserStatus: (status: string) => void
-  setPhoto: any
+  setPhoto: (file: FileList | null) => void
   updateProfileAbout: (contact: string, value: string | boolean) => void
   updateProfileContacts: (contact: string, value: string) => void
 }

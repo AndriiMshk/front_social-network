@@ -96,7 +96,7 @@ export const updateStatusTC = (status: string) => async(dispatch: DispatchType) 
   }
 };
 
-export const setPhotoTC = (file: any) => async(dispatch: DispatchType) => {
+export const setPhotoTC = (file: FileList | null) => async(dispatch: DispatchType) => {
   try {
     const res = await profileAPI.setPhoto(file);
     if (res.data.resultCode === 0) {
@@ -132,7 +132,7 @@ export const updateProfileContactsTC = (contact: string, value: string) =>
     }
   };
 
-export const updateProfileAboutTC = (contact: string, value: string | boolean) =>
+export const updateProfileAboutTC = (contact: string, value: any) =>
   async(dispatch: DispatchType, getState: () => RootStateType) => {
     const currentProfile = getState().profile.profile;
     try {

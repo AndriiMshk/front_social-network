@@ -28,6 +28,7 @@ export const setUserAuthDataAC = (
 export const authMeTC = () => async(dispatch: Dispatch) => {
   try {
     const data = await authAPI.authGetRequest();
+    console.log(data);
     if (data.resultCode === 0) {
       const { id, login, email } = data.data;
       dispatch(setUserAuthDataAC(id, email, login, true));

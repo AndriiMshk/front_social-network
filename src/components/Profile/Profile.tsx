@@ -8,7 +8,7 @@ export type ProfilePropsTpe = {
   status: string
   updateUserStatus: (status: string) => void
   isMyProfilePage: boolean
-  setPhoto: any
+  setPhoto: (file: FileList | null) => void
   updateProfileAbout: (contact: string, value: string | boolean) => void
   updateProfileContacts: (contact: string, value: string) => void
   error: string
