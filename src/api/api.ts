@@ -39,9 +39,9 @@ export const authAPI = {
         .then((response) => response.data)
     );
   },
-  loginRequest(email: string, password: string, rememberMe: boolean = false) {
+  loginRequest(email: string, password: string, rememberMe: boolean, captcha: string | null) {
     return (
-      instance.post(`/auth/login`, { email, password, rememberMe })
+      instance.post(`/auth/login`, { email, password, rememberMe, captcha })
     );
   },
   logoutRequest() {
@@ -71,6 +71,12 @@ export const profileAPI = {
   },
   updateProfile(updatedProfile: UpdatedProfileType) {
     return instance.put(`/profile`, updatedProfile);
+  },
+};
+
+export const securityAPI = {
+  getCaptcha() {
+    return instance.get('/security/get-captcha-url');
   },
 };
 
