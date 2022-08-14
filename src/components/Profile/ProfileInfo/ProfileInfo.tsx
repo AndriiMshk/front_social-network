@@ -1,91 +1,102 @@
 import React from 'react';
 import style from './ProfileInfo.module.css';
 import { Preloader } from '../../common/Preloader/Preloader';
-import { ProfileType } from '../ProfileContainer';
 import { EditableSpan } from './EditableSpan';
+import { ProfileType } from '../../../api/api';
 
-export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (props) => {
+export const ProfileInfo: React.FC<ProfileInfoPropsTpe> = (
+  {
+    setPhoto,
+    profile,
+    isMyProfilePage,
+    updateProfileAbout,
+    status,
+    updateUserStatus,
+    updateProfileContacts,
+    error,
+  }) => {
 
   const onChangePhotoSelectorHandler = (file: FileList | null) => {
     if (file) {
-      props.setPhoto(file[0]);
+      setPhoto(file[0]);
     }
   };
 
-  if (!props.profile) {
+  if (!profile) {
     return <Preloader />;
   }
-
   return (
     <div>
       <div className={style.descriptionBlock}>
         <div><h3><EditableSpan
-          isMyProfilePage={props.isMyProfilePage}
-          value={props.profile.fullName}
-          updateValue={(value) => props.updateProfileAbout('fullName', value)}
+          isMyProfilePage={isMyProfilePage}
+          value={profile.fullName || ''}
+          updateValue={(value) => updateProfileAbout('fullName', value)}
         /></h3></div>
-        <img src={props.profile.photos.small} alt="" />
-        {props.isMyProfilePage &&
+        <img src={profile.photos?.small || ''} alt="" />
+        {isMyProfilePage &&
         <input
           type="file"
           onChange={(e) => onChangePhotoSelectorHandler(e.target.files)}
         />}
         <h5>Status:
           <EditableSpan
-            value={props.status}
-            updateValue={props.updateUserStatus}
-            isMyProfilePage={props.isMyProfilePage}
+            value={status}
+            updateValue={updateUserStatus}
+            isMyProfilePage={isMyProfilePage}
           />
         </h5>
         <hr />
         <div>
           Looking for a job:
-          {!props.isMyProfilePage
-            ? <span> {props.profile.lookingForAJob ? 'Yes' : 'No'}</span>
+          {!isMyProfilePage
+            ? <span> {profile.lookingForAJob ? 'Yes' : 'No'}</span>
             : <input
               type="checkbox"
-              checked={props.profile.lookingForAJob}
-              onChange={(value) => props.updateProfileAbout('lookingForAJob', value.target.checked)}
+              checked={profile.lookingForAJob}
+              onChange={(value) => updateProfileAbout('lookingForAJob', value.target.checked)}
             />}
         </div>
-        {props.profile.lookingForAJob && <span>Skills:
+        {profile.lookingForAJob && <span>Skills:
           <EditableSpan
-            value={props.profile.lookingForAJobDescription || ''}
-            updateValue={(value) => props.updateProfileAbout('lookingForAJobDescription', value)}
-            isMyProfilePage={props.isMyProfilePage}
+            value={profile.lookingForAJobDescription || ''}
+            updateValue={(value) => updateProfileAbout('lookingForAJobDescription', value)}
+            isMyProfilePage={isMyProfilePage}
           />
         </span>}
         <div><h5>AboutMe:</h5> <EditableSpan
-          value={props.profile.aboutMe || ''}
-          updateValue={(value) => props.updateProfileAbout('aboutMe', value)}
-          isMyProfilePage={props.isMyProfilePage}
+          value={profile.aboutMe || ''}
+          updateValue={(value) => updateProfileAbout('aboutMe', value)}
+          isMyProfilePage={isMyProfilePage}
         /></div>
         <hr />
         <div><h5>Contacts:</h5></div>
-        {Object.keys(props.profile.contacts).map((el, index) => {
-            if (props.isMyProfilePage) {
+        {/*@ts-ignore*/}
+        {Object.keys(profile.contacts).map((el, index) => {
+            if (isMyProfilePage) {
+              // @ts-ignore
               return (
                 <div key={index}><h5>{el}: </h5>
                   <EditableSpan
-                    //            @ts-ignore
-                    value={props.profile.contacts[el] || ''}
-                    updateValue={(value) => props.updateProfileContacts(el, value)}
-                    isMyProfilePage={props.isMyProfilePage}
-                    error={props.error}
+                    // @ts-ignore
+                    value={profile.contacts[el] || ''}
+                    updateValue={(value) => updateProfileContacts(el, value)}
+                    isMyProfilePage={isMyProfilePage}
+                    error={error}
                   />
                 </div>);
             } else { // @ts-ignore
-              if (props.profile.contacts[el]) {
+              if (profile.contacts[el]) {
                 return (
                   <div key={index}><h5>{el}: </h5>
                     {/*@ts-ignore*/}
-                    <div>{props.profile.contacts[el]}</div>
+                    <div>{profile.contacts[el]}</div>
                   </div>);
               }
             }
           },
         )}
-        <div>{props.error}</div>
+        <div>{error}</div>
       </div>
     </div>
   );
@@ -96,7 +107,7 @@ export type ProfileInfoPropsTpe = {
   status: string
   updateUserStatus: (status: string) => void
   isMyProfilePage: boolean
-  setPhoto: any
+  setPhoto: (file: File | null) => void
   updateProfileAbout: (contact: string, value: string | boolean) => void
   updateProfileContacts: (contact: string, value: string) => void
   error: string

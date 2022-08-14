@@ -13,8 +13,9 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ProfileFromReduxType, RootStateType } from '../../Redux/store';
 import { compose } from 'redux';
 import { withAuthRedirectHOC } from '../../HOC/AuthRedirectHOC';
+import { ProfileType } from '../../api/api';
 
-class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> {
+class ProfileContainer extends React.Component<ProfilePropsType, ProfileFromReduxType> {
 
   updateProfileHelper(): void {
     if (this.props.authorizedUserId) {
@@ -34,7 +35,7 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
   }
 
   componentDidUpdate(
-    prevProps: Readonly<PropsType>,
+    prevProps: Readonly<ProfilePropsType>,
     prevState: Readonly<ProfileFromReduxType>, snapshot?: any,
   ): void {
     if (prevProps.match.params.userId !== this.props.match.params.userId) {
@@ -44,7 +45,7 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
       this.setState({ status: this.props.status });
     }
     if (prevProps.error !== this.props.error) {
-      this.setState({ error: this.props.error });
+      this.setState({ profileError: this.props.error });
     }
   }
 
@@ -66,12 +67,12 @@ class ProfileContainer extends React.Component<PropsType, ProfileFromReduxType> 
   }
 }
 
-const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
+const mapStateToProps = (state: RootStateType) => ({
   profile: state.profile.profile,
   status: state.profile.status,
   authorizedUserId: state.auth.userId,
   isAuth: state.auth.isAuth,
-  error: state.app.error
+  error: state.app.error,
 });
 
 export default compose<React.ComponentType>(
@@ -89,29 +90,7 @@ export default compose<React.ComponentType>(
   withAuthRedirectHOC,
 )(ProfileContainer);
 
-export type ProfileType = {
-  aboutMe: string
-  userId: number
-  lookingForAJob: boolean
-  lookingForAJobDescription: string
-  fullName: string
-  contacts: {
-    github: string
-    vk: string
-    facebook: string
-    instagram: string
-    twitter: string
-    website: string
-    youtube: string
-    mainLink: string
-  }
-  photos: {
-    small: string
-    large: string
-  }
-}
-
-type mapStateToPropsType = {
+type MapStateToPropsType = {
   profile: ProfileType | null
   status: string
   authorizedUserId: number | null
@@ -119,11 +98,11 @@ type mapStateToPropsType = {
   error: string
 }
 
-type mapDispatchPropsType = {
+type MapDispatchPropsType = {
   setUserProfile: (userId: string) => void
   getUserStatus: (userId: string) => void
   updateUserStatus: (status: string) => void
-  setPhoto: (file: FileList | null) => void
+  setPhoto: (file: File | null) => void
   updateProfileAbout: (contact: string, value: string | boolean) => void
   updateProfileContacts: (contact: string, value: string) => void
 }
@@ -133,7 +112,7 @@ type PathParamsType = {
 }
 
 // Type for withRouter
-type ProfileContainerPropsType = mapStateToPropsType & mapDispatchPropsType
-type PropsType = RouteComponentProps<PathParamsType> & ProfileContainerPropsType
+type ProfileContainerPropsType = MapStateToPropsType & MapDispatchPropsType
+type ProfilePropsType = RouteComponentProps<PathParamsType> & ProfileContainerPropsType
 
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import userPhoto from '../../assets/imgs/avatar.png';
 import { UserType } from '../../Redux/users-reducer';
+import style from './users.module.css';
 
 type UserItemPropsType = {
   user: UserType
@@ -14,9 +15,9 @@ export const UserItem: React.FC<UserItemPropsType> = (props) => {
   const isFollowButtonDisabled = props.isFollowingIngProgress.some(id => id === props.user.id)
 
   return (
-    <div>
+    <div className={style.userItem}>
           <span>
-            <div className="avatar">
+            <div className={style.avatar}>
               <NavLink to={'/profile/' + props.user.id}>
               <img src={props.user.photos.small
                 ? props.user.photos.small
@@ -41,11 +42,6 @@ export const UserItem: React.FC<UserItemPropsType> = (props) => {
             <div>{props.user.name}</div>
             <div>{props.user.status}</div>
           </span>
-          <span>
-            <div>{'user.location.country'}</div>
-            <div>{'user.location.city'}</div>
-          </span>
         </span>
-      {'user.fullName'}
     </div>);
 };

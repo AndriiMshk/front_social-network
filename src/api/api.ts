@@ -69,7 +69,7 @@ export const profileAPI = {
     return instance.put(`/profile/photo`, formData,
       { headers: { 'Content-Type': 'multipart/form-data' } });
   },
-  updateProfile(updatedProfile: UpdatedProfileType) {
+  updateProfile(updatedProfile: ProfileType) {
     return instance.put(`/profile`, updatedProfile);
   },
 };
@@ -80,13 +80,7 @@ export const securityAPI = {
   },
 };
 
-export type ResponseTypeAPI<Data = {}> = {
-  data: Data,
-  messages: string[],
-  resultCode: number
-}
-
-export type UpdatedProfileType = {
+export type ProfileType = {
   aboutMe?: string
   userId?: number
   lookingForAJob?: boolean
@@ -102,4 +96,14 @@ export type UpdatedProfileType = {
     youtube?: string
     mainLink?: string
   }
+  photos?: {
+    small?: string
+    large?: string
+  }
+}
+
+export type ResponseTypeAPI<Data = {}> = {
+  data: Data,
+  messages: string[],
+  resultCode: number
 }

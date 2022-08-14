@@ -4,7 +4,7 @@ import { Navbar } from './components/Navbar/Navbar';
 import { News } from './components/News/News';
 import { Music } from './components/Music/Music';
 import { Settings } from './components/Settings/Settings';
-import { Route, withRouter } from 'react-router-dom';
+import { Redirect, Route, withRouter } from 'react-router-dom';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
@@ -16,20 +16,27 @@ import { compose } from 'redux';
 import { setInitializeTC } from './Redux/app-reducer';
 import { Preloader } from './components/common/Preloader/Preloader';
 import { lazyRenderHOC } from './HOC/LazyRenderHOC';
-
-type AppPropsType = {
-  initialize: () => void
-  isInitialize: boolean
-}
+import ErrorMessage from './components/common/ErrorMessage/ErrorMessage';
 
 class AppContainer extends React.Component<AppPropsType, RootStateType> {
 
+  catchAllUnhandledErrors(promiseRejectionEvent: PromiseRejectionEvent) {
+    console.warn(promiseRejectionEvent.reason);
+  };
+
   componentDidMount(): void {
+    window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors.bind(this));
     this.props.initialize();
   }
 
+  componentWillUnmount(): void {
+    window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors.bind(this));
+  }
+
   render() {
-    if (!this.props.isInitialize) return <Preloader/>
+    if (!this.props.isInitialize) {
+      return <Preloader />;
+    }
 
     return (
       <div className="app-wrapper">
@@ -43,14 +50,12 @@ class AppContainer extends React.Component<AppPropsType, RootStateType> {
           <Route path={'/music'} component={Music} />
           <Route path={'/settings'} component={Settings} />
           <Route path={'/login'} render={lazyRenderHOC(LoginContainer)} />
+          <Route path={'/'} render={() => <Redirect to={'/profile'} />} />
         </div>
+        <ErrorMessage />
       </div>
     );
   }
-}
-
-type mapStateToPropsType = {
-  isInitialize: boolean
 }
 
 const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
@@ -62,3 +67,12 @@ export const App = compose<React.ComponentType>(
       initialize: setInitializeTC,
     },
   ), withRouter)(AppContainer);
+
+type AppPropsType = {
+  initialize: () => void
+  isInitialize: boolean
+}
+
+type mapStateToPropsType = {
+  isInitialize: boolean
+}

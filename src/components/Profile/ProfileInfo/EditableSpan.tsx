@@ -1,13 +1,4 @@
 import React from 'react';
-import { ProfileFromReduxType } from '../../../Redux/store';
-
-type EditableSpanPropsType = {
-  value: string
-  updateValue: (status: string) => void
-  isMyProfilePage: boolean
-  error?: string
-}
-type StateType = { editMode: boolean, value: string, error?: string }
 
 export class EditableSpan extends React.Component<EditableSpanPropsType, StateType> {
 
@@ -23,7 +14,7 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
 
   componentDidUpdate(
     prevProps: Readonly<EditableSpanPropsType>,
-    prevState: Readonly<ProfileFromReduxType>, snapshot?: any,
+    prevState: Readonly<StateType>, snapshot?: any,
   ): void {
     if (prevProps.value !== this.props.value) {
       this.setState({ value: this.props.value });
@@ -68,7 +59,7 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
           ?
           <div>
             <span style={this.props.isMyProfilePage ? { cursor: 'pointer' } : {}}
-                  onDoubleClick={this.activateEditMode.bind(this)}  // interesting case
+                  onDoubleClick={this.activateEditMode.bind(this)}
             >{this.props.value || '--------------'}</span>
           </div>
           :
@@ -86,3 +77,11 @@ export class EditableSpan extends React.Component<EditableSpanPropsType, StateTy
     );
   }
 }
+
+type EditableSpanPropsType = {
+  value: string
+  updateValue: (status: string) => void
+  isMyProfilePage: boolean
+  error?: string
+}
+type StateType = { editMode: boolean, value: string, error?: string }

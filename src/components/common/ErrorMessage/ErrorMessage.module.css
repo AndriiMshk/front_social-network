@@ -1,0 +1,15 @@
+.container {
+  position: fixed;
+  top: 80%;
+  left: 5%;
+  width: 90%;
+  border: 2px solid red;
+  color: red;
+  font-size: 25px;
+  text-align: center;
+  background-color: rgba(255, 178, 178, 0.7)
+}
+
+.hide {
+  display: none;
+}

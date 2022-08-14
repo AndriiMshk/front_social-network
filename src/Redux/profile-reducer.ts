@@ -1,5 +1,4 @@
-import { ProfileType } from '../components/Profile/ProfileContainer';
-import { profileAPI } from '../api/api';
+import { profileAPI, ProfileType } from '../api/api';
 import { DispatchType, RootStateType } from './store';
 import axios from 'axios';
 import { setErrorAC } from './app-reducer';
@@ -10,11 +9,12 @@ const initialState = {
     { id: 2, message: 'hello', likeCounts: 0 },
     { id: 3, message: 'hello', likeCounts: 0 },
   ],
-  profile: null,
+  profile: null as ProfileType | null,
   status: '',
+  profileError: ''
 };
 
-export const profileReducer = (state: initialStateType = initialState, action: actionType): any => {
+export const profileReducer = (state: InitialStateType = initialState, action: actionType): InitialStateType => {
   switch (action.type) {
     case 'profile/ADD-POST':
       return {
@@ -67,7 +67,8 @@ export const setUserProfileTC = (userId: number) => async(dispatch: DispatchType
     dispatch(setUserProfileAC(res.data));
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.warn(error.message);
+      dispatch(setErrorAC(error.message));
+      setTimeout(() => {dispatch(setErrorAC(''));}, 2000);
     }
   }
 };
@@ -78,7 +79,8 @@ export const setStatusTC = (userId: number) => async(dispatch: DispatchType) => 
     dispatch(setStatusAC(res.data));
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.warn(error.message);
+      dispatch(setErrorAC(error.message));
+      setTimeout(() => {dispatch(setErrorAC(''));}, 2000);
     }
   }
 };
@@ -91,7 +93,8 @@ export const updateStatusTC = (status: string) => async(dispatch: DispatchType) 
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.warn(error.message);
+      dispatch(setErrorAC(error.message));
+      setTimeout(() => {dispatch(setErrorAC(''));}, 2000);
     }
   }
 };
@@ -104,7 +107,8 @@ export const setPhotoTC = (file: FileList | null) => async(dispatch: DispatchTyp
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.warn(error.message);
+      dispatch(setErrorAC(error.message));
+      setTimeout(() => {dispatch(setErrorAC(''));}, 2000);
     }
   }
 };
@@ -116,18 +120,19 @@ export const updateProfileContactsTC = (contact: string, value: string) =>
       const res = await profileAPI.updateProfile(
         {
           ...currentProfile,
-          contacts: { ...currentProfile.contacts, [contact]: value },
+          contacts: { ...currentProfile?.contacts, [contact]: value },
         });
       if (res.data.resultCode === 0) {
         dispatch(updateUserContactsAC(contact, value));
-        dispatch(setErrorAC(''))
-      }
-      else {
-        dispatch(setErrorAC(res.data.messages[0]))
+        dispatch(setErrorAC(''));
+      } else {
+        dispatch(setErrorAC(res.data.messages[0]));
+        setTimeout(() => {dispatch(setErrorAC(''));}, 2000);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.warn(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {dispatch(setErrorAC(''));}, 2000);
       }
     }
   };
@@ -140,16 +145,13 @@ export const updateProfileAboutTC = (contact: string, value: any) =>
       dispatch(updateUserAboutAC(contact, value));
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.warn(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {dispatch(setErrorAC(''));}, 2000);
       }
     }
   };
 
-type initialStateType = {
-  postsData: { id: number, message: string, likeCounts: number }[]
-  profile: ProfileType | null
-  status: string
-}
+type InitialStateType = typeof initialState
 
 type addPostACType = ReturnType<typeof addPostAC>
 type setUserProfileType = ReturnType<typeof setUserProfileAC>
